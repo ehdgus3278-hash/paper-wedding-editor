@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Serif+KR:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
-    /* ================= 100% SELF-CONTAINED PURE CSS ================= */
+    /* ================= 100% SELF-CONTAINED DYNAMIC ADAPTIVE CSS ================= */
     :root {
       --bg: #F5F2EB;
       --surface: #FFFFFF;
@@ -28,6 +28,12 @@
       --font-cormorant: 'Cormorant Garamond', 'Garamond', serif;
       --font-myeongjo: 'Noto Serif KR', 'Batang', serif;
       --font-sans: -apple-system, BlinkMacSystemFont, 'Pretendard', sans-serif;
+
+      /* Dynamic Theme Variables */
+      --paper-text: #1A1A1A;
+      --paper-muted: #8C8578;
+      --paper-border: #EAE6DD;
+      --paper-card-bg: rgba(255, 255, 255, 0.65);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -48,6 +54,7 @@
     .flex-col { flex-direction: column; }
     .flex-1 { flex: 1; }
     .items-center { align-items: center; }
+    .items-end { align-items: flex-end; }
     .justify-between { justify-content: space-between; }
     .justify-center { justify-content: center; }
     .text-center { text-align: center; }
@@ -158,9 +165,7 @@
     }
 
     /* Accordion Item */
-    .acc-item {
-      border-bottom: 1px solid var(--border);
-    }
+    .acc-item { border-bottom: 1px solid var(--border); }
     .acc-btn {
       width: 100%;
       padding: 14px 18px;
@@ -187,21 +192,9 @@
       justify-content: center;
       margin-right: 10px;
     }
-    .acc-title {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--charcoal);
-    }
-    .acc-desc {
-      font-size: 10px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-    .acc-chevron {
-      color: var(--muted);
-      font-size: 12px;
-      transition: transform 0.2s ease;
-    }
+    .acc-title { font-size: 12px; font-weight: 600; color: var(--charcoal); }
+    .acc-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
+    .acc-chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s ease; }
     .acc-body {
       padding: 4px 18px 16px 18px;
       display: flex;
@@ -234,7 +227,7 @@
       box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.15);
     }
 
-    /* Spec Grid Cards */
+    /* Grids */
     .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
     .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
     .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
@@ -268,28 +261,41 @@
       align-items: center;
       justify-content: flex-start;
       overflow-y: auto;
-      padding: 20px 14px 40px 14px;
+      padding: 16px 12px 36px 12px;
       -webkit-overflow-scrolling: touch;
     }
 
-    /* Paper Floating Mockup */
+    /* ================= DYNAMIC PAPER MOCKUP ================= */
     .paper-mockup {
-      width: 320px;
-      height: 480px;
       position: relative;
-      background-color: var(--linen);
-      background-image: radial-gradient(#E8E2D8 0.75px, transparent 0.75px);
-      background-size: 14px 14px;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22), 0 0 1px 1px rgba(0,0,0,0.06);
       border-radius: 2px;
       overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 24px 20px;
-      margin: 12px auto;
+      margin: 10px auto;
       flex-shrink: 0;
-      transition: width 0.25s ease, height 0.25s ease;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22), 0 0 1px 1px rgba(0,0,0,0.06);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      color: var(--paper-text);
+    }
+
+    /* SPEC 1: Postcard Portrait (엽서형 100x150mm) */
+    .mockup-postcard {
+      width: 330px;
+      height: 495px;
+      padding: 24px 20px;
+    }
+
+    /* SPEC 2: 2-Fold Horizontal Spread (2단 가로접지 200x150mm 펼침면) */
+    .mockup-fold2 {
+      width: 360px;
+      height: 270px;
+      padding: 16px 14px;
+    }
+
+    /* SPEC 3: Ticket Slim Vertical (티켓형 75x150mm) */
+    .mockup-ticket {
+      width: 250px;
+      height: 500px;
+      padding: 22px 16px;
     }
 
     /* Paper Textures */
@@ -297,69 +303,87 @@
       background-color: #FAF8F5;
       background-image: radial-gradient(#E8E2D8 0.8px, transparent 0.8px);
       background-size: 14px 14px;
-      color: #1A1A1A;
     }
     .tex-extra {
       background-color: #FFFFFF;
       background-image: radial-gradient(#EFEFEF 0.5px, transparent 0.5px);
       background-size: 10px 10px;
-      color: #1A1A1A;
     }
     .tex-linen {
       background-color: #F8F5EE;
       background-image: repeating-linear-gradient(0deg, rgba(215,205,190,0.2) 0px, transparent 1px, transparent 4px),
                         repeating-linear-gradient(90deg, rgba(215,205,190,0.2) 0px, transparent 1px, transparent 4px);
-      color: #1A1A1A;
     }
     .tex-forest {
       background-color: #1A261D;
       background-image: radial-gradient(rgba(212, 175, 55, 0.12) 1px, transparent 1px);
       background-size: 16px 16px;
-      color: #FAF8F5 !important;
     }
-    .tex-forest .text-muted { color: #A8A398 !important; }
-    .tex-forest .frame-box { border-color: rgba(212, 175, 55, 0.85) !important; background: rgba(0,0,0,0.2) !important; }
 
     /* Bleed Guidelines */
     .guide-box {
       position: absolute;
-      top: 12px; right: 12px; bottom: 12px; left: 12px;
+      top: 10px; right: 10px; bottom: 10px; left: 10px;
       border: 1px dashed var(--gold-border);
       pointer-events: none;
-      z-index: 20;
+      z-index: 25;
     }
     .guide-fold-line {
       position: absolute;
       top: 0; bottom: 0; left: 50%;
-      border-right: 1.5px dashed rgba(160, 140, 120, 0.55);
+      border-right: 1.5px dashed rgba(160, 140, 120, 0.6);
       pointer-events: none;
-      z-index: 20;
+      z-index: 25;
     }
 
-    /* Frame Wrapper */
-    .frame-box {
-      width: 190px;
-      height: 245px;
-      margin: 8px auto;
-      padding: 6px;
-      border: 2px double rgba(197, 160, 89, 0.7);
-      background: rgba(255,255,255,0.4);
+    /* ================= DYNAMIC FRAME DESIGNS ================= */
+    .frame-wrapper {
+      position: relative;
+      margin: 0 auto;
+      transition: all 0.25s ease;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    .frame-box.goldline { border: 1px solid var(--gold); }
-    .frame-box.arch { border: 1px solid var(--gold); border-radius: 9999px 9999px 0 0; }
-    .frame-box.none { border: none; padding: 0; background: transparent; }
+    /* Frame: Lace #09 */
+    .frame-lace {
+      border: 2px double rgba(197, 160, 89, 0.85);
+      padding: 6px;
+      background: rgba(255, 255, 255, 0.45);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+    /* Frame: Goldline */
+    .frame-goldline {
+      border: 1px solid var(--gold);
+      padding: 4px;
+      background: rgba(255, 255, 255, 0.2);
+    }
+    /* Frame: Arch (Sacred Roman Arch with true image clipping) */
+    .frame-arch {
+      border: 1.5px solid var(--gold);
+      padding: 4px;
+      border-radius: 120px 120px 0 0;
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .frame-arch .photo-clip {
+      border-radius: 116px 116px 0 0;
+    }
+    /* Frame: None (Full bleed clean) */
+    .frame-none {
+      border: none;
+      padding: 0;
+      background: transparent;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
 
-    .photo-inner {
+    .photo-clip {
       width: 100%;
       height: 100%;
       overflow: hidden;
       background: #EAE6DF;
       position: relative;
     }
-    .photo-inner img {
+    .photo-clip img {
       width: 100%;
       height: 100%;
       object-fit: cover;
@@ -388,8 +412,10 @@
       .sidebar-panel { width: 340px; display: block !important; }
       .studio-area { display: flex !important; }
       .specs-panel { width: 300px; border-left: 1px solid var(--border); display: block !important; }
-      .paper-mockup { width: 420px; height: 630px; padding: 32px 28px; }
-      .frame-box { width: 250px; height: 320px; }
+
+      .mockup-postcard { width: 420px; height: 630px; padding: 32px 28px; }
+      .mockup-fold2 { width: 720px; height: 540px; padding: 28px 24px; }
+      .mockup-ticket { width: 320px; height: 640px; padding: 28px 20px; }
     }
   </style>
 </head>
@@ -404,13 +430,11 @@
 
     <!-- Right Controls -->
     <div class="flex items-center" style="gap: 8px;">
-      <!-- Guide Toggle -->
       <label class="flex items-center" style="font-size: 11px; color: var(--muted); cursor: pointer; gap: 4px;">
         <input type="checkbox" id="chkBleed" checked style="accent-color: var(--gold);">
         <span style="font-size: 10px;">가이드선</span>
       </label>
 
-      <!-- Export Button -->
       <button id="btnExport" style="background: var(--charcoal); color: white; border: none; padding: 6px 12px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer;">
         🖨️ 인쇄용 다운로드
       </button>
@@ -437,32 +461,32 @@
     <aside class="sidebar-panel hidden" id="panelSettings">
       <div class="panel-header">
         <span class="panel-title">DESIGN STEPS</span>
-        <span style="font-size: 10px; color: var(--gold); font-weight: 600;">도안 제작 설정</span>
+        <span style="font-size: 10px; color: var(--gold); font-weight: 600;">실시간 도안 설정</span>
       </div>
 
-      <!-- STEP 1. 용지 규격 & 재질 -->
+      <!-- STEP 1. 용지 형태 및 재질 -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(1)">
           <div class="flex items-center">
             <div class="acc-badge">1</div>
             <div>
               <div class="acc-title">용지 형태 및 재질</div>
-              <div class="acc-desc">엽서형, 접지형 및 특수지 질감</div>
+              <div class="acc-desc">엽서형, 2단 접지형, 티켓형 및 특수지</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-1">▾</span>
         </button>
         <div class="acc-body" id="accBody-1">
           <div>
-            <label class="field-label">인쇄 형태 선택</label>
+            <label class="field-label">인쇄 형태 선택 (레이아웃 자동 적응)</label>
             <div class="grid-3">
               <div class="card-choice active" onclick="setSpec('postcard', this)">
-                <div style="width: 14px; height: 22px; border: 1px solid var(--gold); background: white; margin-bottom: 4px;"></div>
+                <div style="width: 14px; height: 22px; border: 1.5px solid var(--gold); background: white; margin-bottom: 4px;"></div>
                 <div class="card-choice-title">엽서형</div>
                 <div class="card-choice-desc">100×150</div>
               </div>
               <div class="card-choice" onclick="setSpec('fold2', this)">
-                <div style="width: 28px; height: 18px; border: 1px solid var(--border-dark); background: white; margin-bottom: 4px;"></div>
+                <div style="width: 28px; height: 18px; border: 1px solid var(--border-dark); background: white; margin-bottom: 4px; display: flex;"><div style="width:50%; border-right: 1px dashed #CCC;"></div></div>
                 <div class="card-choice-title">2단 접지</div>
                 <div class="card-choice-desc">200×150</div>
               </div>
@@ -505,7 +529,7 @@
             <div class="acc-badge">2</div>
             <div>
               <div class="acc-title">사진 및 빈티지 액자</div>
-              <div class="acc-desc">레이스 테두리 및 흑백 필터</div>
+              <div class="acc-desc">레이스, 아치형 마스크 및 흑백 필터</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-2">▾</span>
@@ -515,7 +539,7 @@
             <label class="field-label">액자 프레임 디자인</label>
             <div class="grid-4">
               <div class="card-choice active" onclick="setFrame('lace', this)">
-                <div style="width: 16px; height: 20px; border: 2px dashed var(--gold); margin-bottom: 2px;"></div>
+                <div style="width: 16px; height: 20px; border: 2px double var(--gold); margin-bottom: 2px;"></div>
                 <span style="font-size: 10px;">레이스#09</span>
               </div>
               <div class="card-choice" onclick="setFrame('goldline', this)">
@@ -523,8 +547,8 @@
                 <span style="font-size: 10px;">골드선</span>
               </div>
               <div class="card-choice" onclick="setFrame('arch', this)">
-                <div style="width: 16px; height: 20px; border: 1px solid var(--border-dark); border-radius: 8px 8px 0 0; margin-bottom: 2px;"></div>
-                <span style="font-size: 10px;">아치형</span>
+                <div style="width: 16px; height: 20px; border: 1.5px solid var(--gold); border-radius: 8px 8px 0 0; margin-bottom: 2px;"></div>
+                <span style="font-size: 10px;">클래식 아치</span>
               </div>
               <div class="card-choice" onclick="setFrame('none', this)">
                 <div style="width: 16px; height: 20px; border: 1px dashed #DDD; margin-bottom: 2px;"></div>
@@ -680,10 +704,10 @@
       </div>
     </aside>
 
-    <!-- ================= CENTER STUDIO / CANVAS PREVIEW ================= -->
+    <!-- ================= CENTER STUDIO / DYNAMIC CANVAS PREVIEW ================= -->
     <main class="studio-area" id="panelStudio">
 
-      <!-- View Switcher (Front Cover / Back Inner) -->
+      <!-- Side Switcher (Front Cover / Back Inner) -->
       <div class="flex" style="background: #E8E3DA; padding: 3px; border-radius: 6px; gap: 4px; margin-bottom: 8px;">
         <button id="btnSideF" onclick="setSide('front')" style="padding: 5px 14px; font-size: 11px; font-weight: 700; border: none; background: white; color: var(--charcoal); border-radius: 4px; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.08);">
           앞면 (Cover)
@@ -694,7 +718,7 @@
       </div>
 
       <!-- Real Paper Mockup Container -->
-      <div class="paper-mockup tex-tintoretto" id="mockupPaper">
+      <div class="paper-mockup mockup-postcard tex-tintoretto" id="mockupPaper">
 
         <!-- Print Bleed Overlay -->
         <div class="guide-box" id="guideBleedBox">
@@ -704,74 +728,8 @@
         </div>
         <div class="guide-fold-line hidden" id="guideFoldLine"></div>
 
-        <!-- [FRONT COVER CONTENT] -->
-        <div id="coverView" class="h-full flex flex-col justify-between">
-          <div class="text-center">
-            <span class="font-cormorant" style="font-size: 10px; letter-spacing: 0.28em; color: var(--muted); text-transform: uppercase;">
-              2027.02.21 SUN
-            </span>
-          </div>
-
-          <!-- Vintage Frame & Photo -->
-          <div class="flex items-center justify-center">
-            <div class="frame-box" id="frameBox">
-              <div class="photo-inner">
-                <img id="imgMain" src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80" alt="Wedding" style="filter: grayscale(100%);">
-              </div>
-            </div>
-          </div>
-
-          <!-- WEDDING DAY Asymmetric Typography -->
-          <div class="flex items-end justify-between" style="border-top: 1px solid var(--border); padding-top: 10px;">
-            <div class="font-bodoni" style="font-size: 22px; line-height: 1; letter-spacing: 0.05em; font-weight: 600;">
-              WEDDING<br>DAY
-            </div>
-            <div class="text-right">
-              <div class="font-myeongjo" id="txtCouple" style="font-size: 13px; font-weight: 600;">김동현 & 하은지</div>
-              <div class="font-myeongjo text-muted" id="txtDateTimeShort" style="font-size: 10px; color: var(--muted); margin-top: 2px; line-height: 1.3;">
-                2027년 2월 21일, 오전 11시<br>라포르테웨딩홀 5층
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- [BACK INNER CONTENT] -->
-        <div id="innerView" class="h-full flex flex-col justify-between hidden text-center font-myeongjo">
-          <div>
-            <div class="font-bodoni" style="font-size: 14px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 10px;">INVITATION</div>
-            <p id="txtLetter" style="font-size: 11px; line-height: 1.8; color: var(--body); white-space: pre-wrap;">서로를 배려하고 아끼며
-평생을 함께 걸어가고자 합니다.
-
-저희 두 사람의 새로운 시작을
-따뜻한 축복으로 밝혀주세요.</p>
-          </div>
-
-          <div style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 8px 0; font-size: 11px; line-height: 1.6;">
-            <p id="txtParentsG">김윤종 · 장영희 의 장남 김동현</p>
-            <p id="txtParentsB" style="margin-top: 2px;">하금두 · 장금숙 의 장녀 하은지</p>
-          </div>
-
-          <!-- Mini Calendar -->
-          <div style="background: rgba(255,255,255,0.6); padding: 8px; border-radius: 4px; border: 1px solid var(--border);">
-            <div class="font-cormorant" style="font-size: 10px; letter-spacing: 0.15em; color: var(--muted); margin-bottom: 4px;">FEBRUARY 2027</div>
-            <div style="display: grid; grid-template-columns: repeat(7, 1fr); font-size: 9px; color: #999; font-family: var(--font-sans); gap: 2px;">
-              <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-              <span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
-              <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
-              <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
-              <span style="background: var(--gold); color: white; border-radius: 50%; font-weight: 700;">21</span>
-              <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
-            </div>
-          </div>
-
-          <!-- Directions Map Block -->
-          <div class="text-left font-sans" style="background: rgba(255,255,255,0.7); padding: 8px 10px; border-radius: 4px; border: 1px solid var(--border); font-size: 10px;">
-            <div style="font-weight: 700; margin-bottom: 2px;" id="txtVenueName">라포르테웨딩홀 5층 라포르테홀</div>
-            <div style="color: var(--muted); font-size: 9px; margin-bottom: 4px;" id="txtAddress">대전광역시 서구 계룡로 572</div>
-            <p style="color: #444;" id="txtSubway">🚇 지하철 1호선 탄방역 5번 출구 (도보 5분)</p>
-            <p style="color: #444;" id="txtParking">🚗 웨딩홀 지하 1~3층 주차장 (2시간 무료)</p>
-          </div>
-        </div>
+        <!-- DYNAMIC CANVAS MOUNT CONTAINER -->
+        <div id="dynamicCanvasMount" class="w-full h-full"></div>
 
       </div>
     </main>
@@ -826,8 +784,29 @@
 
   </div>
 
-  <!-- ================= JAVASCRIPT CONTROLLER ================= -->
+  <!-- ================= JAVASCRIPT CONTROLLER & ADAPTIVE RENDERER ================= -->
   <script>
+    // State Store
+    const state = {
+      spec: 'postcard',   // postcard, fold2, ticket
+      side: 'front',      // front, back
+      texture: 'tintoretto', // tintoretto, extra, linen, forest
+      frame: 'lace',      // lace, goldline, arch, none
+      groom: '김동현',
+      bride: '하은지',
+      parentsG: '김윤종 · 장영희 의 장남 김동현',
+      parentsB: '하금두 · 장금숙 의 장녀 하은지',
+      date: '2027년 2월 21일 일요일',
+      time: '오전 11시',
+      venue: '라포르테웨딩홀 5층 라포르테홀',
+      address: '대전광역시 서구 계룡로 572',
+      subway: '지하철 1호선 탄방역 5번 출구 (도보 5분)',
+      parking: '웨딩홀 지하 1~3층 전용 주차장 (2시간 무료)',
+      letter: '서로를 배려하고 아끼며\n평생을 함께 걸어가고자 합니다.\n\n저희 두 사람의 새로운 시작을\n따뜻한 축복으로 밝혀주세요.',
+      photoUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80',
+      grayscale: true
+    };
+
     // Mobile Tab Navigation
     function switchMobileTab(tab) {
       document.getElementById('panelStudio').classList.add('hidden');
@@ -865,14 +844,11 @@
 
     // Side Toggle (Front / Back)
     function setSide(side) {
+      state.side = side;
       const btnF = document.getElementById('btnSideF');
       const btnB = document.getElementById('btnSideB');
-      const cover = document.getElementById('coverView');
-      const inner = document.getElementById('innerView');
 
       if (side === 'front') {
-        cover.classList.remove('hidden');
-        inner.classList.add('hidden');
         btnF.style.background = 'white';
         btnF.style.color = 'var(--charcoal)';
         btnF.style.fontWeight = '700';
@@ -882,8 +858,6 @@
         btnB.style.fontWeight = '500';
         btnB.style.boxShadow = 'none';
       } else {
-        cover.classList.add('hidden');
-        inner.classList.remove('hidden');
         btnB.style.background = 'white';
         btnB.style.color = 'var(--charcoal)';
         btnB.style.fontWeight = '700';
@@ -893,77 +867,85 @@
         btnF.style.fontWeight = '500';
         btnF.style.boxShadow = 'none';
       }
+      renderCanvas();
     }
 
     // Spec Card Select
     function setSpec(spec, el) {
       document.querySelectorAll('#accBody-1 .card-choice').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
+      state.spec = spec;
 
       const paper = document.getElementById('mockupPaper');
       const fold = document.getElementById('guideFoldLine');
       const finish = document.getElementById('specFinish');
       const bleed = document.getElementById('specBleed');
 
+      paper.className = paper.className.replace(/mockup-\w+/g, '').trim();
+      paper.classList.add(`mockup-${spec}`);
+
       if (spec === 'postcard') {
-        paper.style.width = window.innerWidth >= 1024 ? '420px' : '320px';
-        paper.style.height = window.innerWidth >= 1024 ? '630px' : '480px';
         fold.classList.add('hidden');
         finish.textContent = '100 × 150 mm';
         bleed.textContent = '106 × 156 mm';
       } else if (spec === 'fold2') {
-        paper.style.width = window.innerWidth >= 1024 ? '640px' : '360px';
-        paper.style.height = window.innerWidth >= 1024 ? '480px' : '270px';
         fold.classList.remove('hidden');
         finish.textContent = '200 × 150 mm';
         bleed.textContent = '206 × 156 mm';
       } else if (spec === 'ticket') {
-        paper.style.width = window.innerWidth >= 1024 ? '310px' : '240px';
-        paper.style.height = window.innerWidth >= 1024 ? '620px' : '480px';
         fold.classList.add('hidden');
         finish.textContent = '75 × 150 mm';
         bleed.textContent = '81 × 156 mm';
       }
+      renderCanvas();
     }
 
     // Texture Select
     function setTexture(tex, el) {
       el.parentElement.querySelectorAll('.card-choice').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
+      state.texture = tex;
 
       const paper = document.getElementById('mockupPaper');
       paper.className = paper.className.replace(/tex-\w+/g, '').trim();
       paper.classList.add(`tex-${tex}`);
+
+      if (tex === 'forest') {
+        document.documentElement.style.setProperty('--paper-text', '#FAF8F5');
+        document.documentElement.style.setProperty('--paper-muted', '#C5A059');
+        document.documentElement.style.setProperty('--paper-border', 'rgba(197, 160, 89, 0.4)');
+        document.documentElement.style.setProperty('--paper-card-bg', 'rgba(0, 0, 0, 0.35)');
+      } else {
+        document.documentElement.style.setProperty('--paper-text', '#1A1A1A');
+        document.documentElement.style.setProperty('--paper-muted', '#8C8578');
+        document.documentElement.style.setProperty('--paper-border', '#EAE6DD');
+        document.documentElement.style.setProperty('--paper-card-bg', 'rgba(255, 255, 255, 0.65)');
+      }
+      renderCanvas();
     }
 
     // Frame Select
     function setFrame(frame, el) {
       document.querySelectorAll('#accBody-2 .card-choice').forEach(c => c.classList.remove('active'));
       el.classList.add('active');
-
-      const box = document.getElementById('frameBox');
-      box.className = `frame-box ${frame}`;
+      state.frame = frame;
+      renderCanvas();
     }
 
-    // Live Text Sync
+    // Live Form Sync
     function syncText() {
-      const g = document.getElementById('inpGroom').value;
-      const b = document.getElementById('inpBride').value;
-      document.getElementById('txtCouple').textContent = `${g} & ${b}`;
-
-      const date = document.getElementById('inpDate').value;
-      const time = document.getElementById('inpTime').value;
-      const venue = document.getElementById('inpVenue').value;
-      document.getElementById('txtDateTimeShort').innerHTML = `${date}, ${time}<br>${venue}`;
-
-      document.getElementById('txtParentsG').textContent = document.getElementById('inpParentsG').value;
-      document.getElementById('txtParentsB').textContent = document.getElementById('inpParentsB').value;
-      document.getElementById('txtLetter').textContent = document.getElementById('inpLetter').value;
-
-      document.getElementById('txtVenueName').textContent = venue;
-      document.getElementById('txtAddress').textContent = document.getElementById('inpAddress').value;
-      document.getElementById('txtSubway').textContent = '🚇 ' + document.getElementById('inpSubway').value;
-      document.getElementById('txtParking').textContent = '🚗 ' + document.getElementById('inpParking').value;
+      state.groom = document.getElementById('inpGroom').value;
+      state.bride = document.getElementById('inpBride').value;
+      state.date = document.getElementById('inpDate').value;
+      state.time = document.getElementById('inpTime').value;
+      state.venue = document.getElementById('inpVenue').value;
+      state.parentsG = document.getElementById('inpParentsG').value;
+      state.parentsB = document.getElementById('inpParentsB').value;
+      state.letter = document.getElementById('inpLetter').value;
+      state.address = document.getElementById('inpAddress').value;
+      state.subway = document.getElementById('inpSubway').value;
+      state.parking = document.getElementById('inpParking').value;
+      renderCanvas();
     }
 
     // Preset Message
@@ -983,19 +965,236 @@
       const file = e.target.files[0];
       if (file) {
         const reader = new FileReader();
-        reader.onload = (ev) => { document.getElementById('imgMain').src = ev.target.result; };
+        reader.onload = (ev) => {
+          state.photoUrl = ev.target.result;
+          renderCanvas();
+        };
         reader.readAsDataURL(file);
       }
     });
 
     document.getElementById('chkGray').addEventListener('change', (e) => {
-      document.getElementById('imgMain').style.filter = e.target.checked ? 'grayscale(100%)' : 'none';
+      state.grayscale = e.target.checked;
+      renderCanvas();
     });
 
-    // Guide Toggle
     document.getElementById('chkBleed').addEventListener('change', (e) => {
       document.getElementById('guideBleedBox').style.display = e.target.checked ? 'block' : 'none';
     });
+
+    // ================= ADAPTIVE LAYOUT RENDERER ENGINE =================
+    function renderCanvas() {
+      const mount = document.getElementById('dynamicCanvasMount');
+      const isFront = state.side === 'front';
+      const grayStyle = state.grayscale ? 'filter: grayscale(100%);' : '';
+
+      // Frame class
+      const frameClass = `frame-${state.frame}`;
+
+      if (state.spec === 'postcard') {
+        // [엽서형 POSTCARD LAYOUT]
+        if (isFront) {
+          mount.innerHTML = `
+            <div class="h-full flex flex-col justify-between">
+              <div class="text-center">
+                <span class="font-cormorant" style="font-size: 10px; letter-spacing: 0.28em; color: var(--paper-muted); text-transform: uppercase;">
+                  2027.02.21 SUN
+                </span>
+              </div>
+
+              <div class="flex items-center justify-center flex-1 my-2">
+                <div class="frame-wrapper ${frameClass}" style="width: 190px; height: 245px;">
+                  <div class="photo-clip">
+                    <img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}">
+                  </div>
+                </div>
+              </div>
+
+              <div class="flex items-end justify-between" style="border-top: 1px solid var(--paper-border); padding-top: 10px;">
+                <div class="font-bodoni" style="font-size: 22px; line-height: 1; letter-spacing: 0.05em; font-weight: 600;">
+                  WEDDING<br>DAY
+                </div>
+                <div class="text-right font-myeongjo">
+                  <div style="font-size: 13px; font-weight: 600;">${state.groom} & ${state.bride}</div>
+                  <div style="font-size: 10px; color: var(--paper-muted); margin-top: 2px; line-height: 1.3;">
+                    ${state.date}, ${state.time}<br>${state.venue}
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          mount.innerHTML = `
+            <div class="h-full flex flex-col justify-between text-center font-myeongjo">
+              <div>
+                <div class="font-bodoni" style="font-size: 14px; letter-spacing: 0.2em; color: var(--paper-muted); margin-bottom: 8px;">INVITATION</div>
+                <p style="font-size: 11px; line-height: 1.8; color: var(--paper-text); white-space: pre-wrap;">${state.letter}</p>
+              </div>
+
+              <div style="border-top: 1px solid var(--paper-border); border-bottom: 1px solid var(--paper-border); padding: 8px 0; font-size: 11px; line-height: 1.6;">
+                <p>${state.parentsG}</p>
+                <p style="margin-top: 2px;">${state.parentsB}</p>
+              </div>
+
+              <div style="background: var(--paper-card-bg); padding: 8px; border-radius: 4px; border: 1px solid var(--paper-border);">
+                <div class="font-cormorant" style="font-size: 10px; letter-spacing: 0.15em; color: var(--paper-muted); margin-bottom: 4px;">FEBRUARY 2027</div>
+                <div style="display: grid; grid-template-columns: repeat(7, 1fr); font-size: 9px; color: #999; font-family: var(--font-sans); gap: 2px;">
+                  <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+                  <span></span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span>
+                  <span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span>
+                  <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                  <span style="background: var(--gold); color: white; border-radius: 50%; font-weight: 700;">21</span>
+                  <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+                </div>
+              </div>
+
+              <div class="text-left font-sans" style="background: var(--paper-card-bg); padding: 8px 10px; border-radius: 4px; border: 1px solid var(--paper-border); font-size: 10px;">
+                <div style="font-weight: 700; margin-bottom: 2px;">${state.venue}</div>
+                <div style="color: var(--paper-muted); font-size: 9px; margin-bottom: 4px;">${state.address}</div>
+                <p style="color: var(--paper-text); font-size: 9px;">🚇 ${state.subway}</p>
+                <p style="color: var(--paper-text); font-size: 9px;">🚗 ${state.parking}</p>
+              </div>
+            </div>
+          `;
+        }
+
+      } else if (state.spec === 'fold2') {
+        // [2단 가로접지 FOLD-2 SPREAD LAYOUT: 좌우 2분할 완벽 적응]
+        if (isFront) {
+          // 앞면 외면 펼침: [좌: 뒷표지 Thank You] | [우: 앞표지 WEDDING DAY & 사진]
+          mount.innerHTML = `
+            <div class="h-full flex" style="gap: 16px;">
+              <!-- 좌측 페이지: 뒷표지 (Back Cover) -->
+              <div class="flex-1 flex flex-col justify-between text-center font-myeongjo p-2" style="border-right: 1px dashed var(--paper-border);">
+                <div class="font-bodoni" style="font-size: 11px; letter-spacing: 0.25em; color: var(--paper-muted); margin-top: 6px;">THANK YOU</div>
+                <div style="font-size: 10px; line-height: 1.7; color: var(--paper-muted); padding: 0 8px;">
+                  따뜻한 사랑과 응원에 감사드리며<br>예쁘게 잘 살겠습니다.
+                </div>
+                <div style="border-top: 1px solid var(--paper-border); padding-top: 8px; font-size: 10px; line-height: 1.5;">
+                  <p>${state.parentsG}</p>
+                  <p>${state.parentsB}</p>
+                </div>
+              </div>
+
+              <!-- 우측 페이지: 앞표지 (Front Cover) -->
+              <div class="flex-1 flex flex-col justify-between p-2">
+                <div class="text-center font-cormorant" style="font-size: 9px; letter-spacing: 0.2em; color: var(--paper-muted);">
+                  2027.02.21 SUN
+                </div>
+                <div class="flex items-center justify-center my-1">
+                  <div class="frame-wrapper ${frameClass}" style="width: 120px; height: 145px;">
+                    <div class="photo-clip">
+                      <img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}">
+                    </div>
+                  </div>
+                </div>
+                <div class="flex items-end justify-between border-t border-tnc-border pt-1.5">
+                  <div class="font-bodoni" style="font-size: 14px; line-height: 1; font-weight: 600;">WEDDING<br>DAY</div>
+                  <div class="text-right font-myeongjo" style="font-size: 10px;">
+                    <strong>${state.groom} & ${state.bride}</strong>
+                    <div style="font-size: 8px; color: var(--paper-muted);">${state.date}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          `;
+        } else {
+          // 뒷면 내면 펼침: [좌: 모시는 글 + 미니달력] | [우: 예식장소 + 약도 + 오시는 길]
+          mount.innerHTML = `
+            <div class="h-full flex" style="gap: 16px;">
+              <!-- 내면 좌측: 모시는 글 & 달력 -->
+              <div class="flex-1 flex flex-col justify-between text-center font-myeongjo p-1" style="border-right: 1px dashed var(--paper-border);">
+                <div>
+                  <div class="font-bodoni" style="font-size: 12px; letter-spacing: 0.2em; color: var(--paper-muted); margin-bottom: 6px;">INVITATION</div>
+                  <p style="font-size: 9.5px; line-height: 1.6; white-space: pre-wrap;">${state.letter}</p>
+                </div>
+                <div style="background: var(--paper-card-bg); padding: 5px; border-radius: 4px; border: 1px solid var(--paper-border); margin-top: 4px;">
+                  <div class="font-cormorant" style="font-size: 9px; letter-spacing: 0.1em; color: var(--paper-muted);">FEBRUARY 2027</div>
+                  <div style="display: grid; grid-template-columns: repeat(7, 1fr); font-size: 8px; color: #999; font-family: var(--font-sans); gap: 1px;">
+                    <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
+                    <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
+                    <span style="background: var(--gold); color: white; border-radius: 50%; font-weight: 700;">21</span>
+                    <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 내면 우측: 예식장소 & 약도 -->
+              <div class="flex-1 flex flex-col justify-between text-left font-sans p-1">
+                <div>
+                  <div class="font-myeongjo" style="font-size: 11px; font-weight: 700; color: var(--gold); margin-bottom: 2px;">
+                    ${state.date} ${state.time}
+                  </div>
+                  <div style="font-weight: 700; font-size: 11px;">${state.venue}</div>
+                  <div style="font-size: 9px; color: var(--paper-muted); margin-bottom: 6px;">${state.address}</div>
+                </div>
+                <div style="background: var(--paper-card-bg); padding: 6px 8px; border-radius: 4px; border: 1px solid var(--paper-border); font-size: 8.5px; line-height: 1.5;">
+                  <p style="font-weight: 600; margin-bottom: 2px;">[ 오시는 길 안내 ]</p>
+                  <p>🚇 ${state.subway}</p>
+                  <p>🚗 ${state.parking}</p>
+                </div>
+              </div>
+            </div>
+          `;
+        }
+
+      } else if (state.spec === 'ticket') {
+        // [티켓형 TICKET / BOARDING PASS LAYOUT: 슬림형 디자인 적응]
+        if (isFront) {
+          mount.innerHTML = `
+            <div class="h-full flex flex-col justify-between text-center font-sans">
+              <!-- Ticket Header with Perforation Dot -->
+              <div style="border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 8px;">
+                <div class="font-cormorant" style="font-size: 12px; letter-spacing: 0.25em; color: var(--gold); font-weight: 700;">WEDDING INVITATION</div>
+                <div style="font-size: 8px; letter-spacing: 0.15em; color: var(--paper-muted); margin-top: 1px;">ADMIT TWO · NO. 20270221</div>
+              </div>
+
+              <!-- Ticket Photo Frame -->
+              <div class="flex items-center justify-center my-2">
+                <div class="frame-wrapper ${frameClass}" style="width: 150px; height: 180px;">
+                  <div class="photo-clip">
+                    <img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}">
+                  </div>
+                </div>
+              </div>
+
+              <!-- Couple & Date Info -->
+              <div class="font-myeongjo">
+                <div style="font-size: 14px; font-weight: 700;">${state.groom} & ${state.bride}</div>
+                <div style="font-size: 10px; color: var(--paper-muted); margin-top: 3px;">
+                  ${state.date}<br>${state.time}
+                </div>
+              </div>
+
+              <!-- Barcode Mockup -->
+              <div style="border-top: 1.5px dashed var(--paper-border); padding-top: 8px;">
+                <div style="font-size: 8px; letter-spacing: 0.2em; color: var(--paper-muted);">${state.venue}</div>
+                <div style="height: 14px; background: repeating-linear-gradient(90deg, #333 0px, #333 1.5px, transparent 1.5px, transparent 3.5px); width: 120px; margin: 4px auto 0 auto; opacity: 0.6;"></div>
+              </div>
+            </div>
+          `;
+        } else {
+          mount.innerHTML = `
+            <div class="h-full flex flex-col justify-between text-center font-myeongjo">
+              <div style="border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 6px;">
+                <div class="font-cormorant" style="font-size: 11px; letter-spacing: 0.2em; color: var(--gold);">INVITATION</div>
+              </div>
+              <p style="font-size: 10px; line-height: 1.7; white-space: pre-wrap; padding: 0 4px;">${state.letter}</p>
+              <div style="font-size: 9.5px; border-top: 1px solid var(--paper-border); border-bottom: 1px solid var(--paper-border); padding: 4px 0;">
+                <p>${state.parentsG}</p>
+                <p>${state.parentsB}</p>
+              </div>
+              <div class="text-left font-sans" style="background: var(--paper-card-bg); padding: 6px; border-radius: 4px; border: 1px solid var(--paper-border); font-size: 8.5px;">
+                <div style="font-weight: 700; font-size: 9.5px; margin-bottom: 2px;">${state.venue}</div>
+                <p style="color: var(--paper-muted); font-size: 8px; margin-bottom: 3px;">${state.address}</p>
+                <p>🚇 ${state.subway}</p>
+                <p>🚗 ${state.parking}</p>
+              </div>
+            </div>
+          `;
+        }
+      }
+    }
 
     // Copy Spec
     function copySpec() {
@@ -1005,8 +1204,11 @@
 
     // Export Alert
     document.getElementById('btnExport').addEventListener('click', () => {
-      alert("[The Paper Chapter]\n인쇄용 300DPI 도안 규격 검증 완료!\n\n규격: 100×150mm (재단 106×156mm)\n해상도: 300 DPI 초고화질\n성원애드피아 / 오프린트미 엽서 인쇄 카테고리에 바로 접수 가능합니다.");
+      alert(`[The Paper Chapter]\n인쇄용 300DPI 도안 규격 검증 완료!\n\n규격: ${state.spec.toUpperCase()}\n재질: ${state.texture}\n해상도: 300 DPI 초고화질\n성원애드피아 / 오프린트미 독판 인쇄 카테고리에 바로 접수 가능합니다.`);
     });
+
+    // Boot
+    renderCanvas();
   </script>
 </body>
 </html>
