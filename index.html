@@ -619,7 +619,9 @@
     }
 
     /* TheNewChapter Style Floating Toolbar on Selected Element */
+    .canvas-el.selected .el-floating-bar { display: flex !important; }
     .el-floating-bar {
+      display: none;
       position: absolute;
       top: -36px;
       left: 50%;
@@ -1707,20 +1709,24 @@
       document.getElementById('selFontKr').value = font;
       updateFontChipsUI(font);
 
-      // If text element selected, update that element; otherwise update all Korean text
       if (state.selectedElId && state.selectedType === 'text') {
         const list = state.side === 'front' ? state.texts : (state.backTexts || []);
-        const el = list.find(t => t.id === state.selectedElId);
-        if (el) el.font = font;
+        const item = list.find(t => t.id === state.selectedElId);
+        if (item) {
+          item.font = font;
+          const el = document.getElementById(item.id);
+          if (el) el.style.fontFamily = font;
+        }
       } else {
         const list = state.side === 'front' ? state.texts : (state.backTexts || []);
-        list.forEach(t => {
-          if (t.text && /[가-힣]/.test(t.text)) {
-            t.font = font;
+        list.forEach(item => {
+          if (item.text && /[가-힣]/.test(item.text)) {
+            item.font = font;
+            const el = document.getElementById(item.id);
+            if (el) el.style.fontFamily = font;
           }
         });
       }
-      renderCanvas();
     }
 
     function updateFontChipsUI(font) {
@@ -1883,12 +1889,18 @@
 
     // TheNewChapter Text Alignment & Formatting Controls
     function setTextAlign(id, align, e) {
-      if (e) e.stopPropagation();
+      if (e) { e.preventDefault(); e.stopPropagation(); }
       const list = state.side === 'front' ? state.texts : (state.backTexts || []);
       const t = list.find(item => item.id === id);
       if (t) {
         t.align = align;
-        renderCanvas();
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.textAlign = align;
+          el.querySelectorAll('.align-btn').forEach(b => b.classList.remove('active'));
+          const btn = el.querySelector(`.align-btn[data-align="${align}"]`);
+          if (btn) btn.classList.add('active');
+        }
       }
     }
 
@@ -1923,14 +1935,14 @@
         let filterStyle = p.grayscale ? 'filter: grayscale(100%) contrast(108%);' : '';
         el.innerHTML = `
           <img src="${p.url}" style="width: 100%; height: 100%; object-fit: cover; display: block; ${filterStyle} pointer-events: none;">
-          ${state.selectedElId === p.id ? `
+          `
             <div class="el-floating-bar">
               <button class="el-floating-btn" onclick="cyclePhotoShape('${p.id}', event)">◩ 형태변경</button>
               <button class="el-floating-btn" onclick="togglePhotoGrayscale('${p.id}'); event.stopPropagation();">◐ 흑백토글</button>
               <span class="el-floating-divider"></span>
               <button class="el-floating-btn danger" onclick="deletePhoto('${p.id}'); event.stopPropagation();">🗑️ 삭제</button>
             </div>
-          ` : ''}
+          `
         `;
 
         el.addEventListener('pointerdown', (e) => startDrag(e, p, 'photo'));
@@ -1963,11 +1975,11 @@
 
         el.innerHTML = `
           <div contenteditable="true" onblur="handleInlineEdit('${t.id}', this.innerText)" style="outline: none;">${renderedText}</div>
-          ${state.selectedElId === t.id ? `
+          `
             <div class="el-floating-bar">
-              <button class="el-floating-btn ${t.align === 'left' ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'left', event)">≡ 좌</button>
-              <button class="el-floating-btn ${(!t.align || t.align === 'center') ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'center', event)">☵ 중</button>
-              <button class="el-floating-btn ${t.align === 'right' ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'right', event)">≡ 우</button>
+              <button class="el-floating-btn align-btn ${t.align === 'left' ? 'active' : ''}" data-align="left" onclick="setTextAlign('${t.id}', 'left', event)" title="좌측 정렬">≡ 좌</button>
+              <button class="el-floating-btn align-btn ${(!t.align || t.align === 'center') ? 'active' : ''}" data-align="center" onclick="setTextAlign('${t.id}', 'center', event)" title="중앙 정렬">☵ 중</button>
+              <button class="el-floating-btn align-btn ${t.align === 'right' ? 'active' : ''}" data-align="right" onclick="setTextAlign('${t.id}', 'right', event)" title="우측 정렬">≡ 우</button>
               <span class="el-floating-divider"></span>
               <button class="el-floating-btn" onclick="resizeText('${t.id}', 1, event)">A+</button>
               <button class="el-floating-btn" onclick="resizeText('${t.id}', -1, event)">A-</button>
@@ -1975,7 +1987,7 @@
               <span class="el-floating-divider"></span>
               <button class="el-floating-btn danger" onclick="deleteText('${t.id}'); event.stopPropagation();">🗑️</button>
             </div>
-          ` : ''}
+          `
         `;
 
         el.addEventListener('pointerdown', (e) => startDrag(e, t, 'text'));
