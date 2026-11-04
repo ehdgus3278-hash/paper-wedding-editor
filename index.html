@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>The Paper Chapter | 종이청첩장 커스텀 스튜디오</title>
+  <title>The Paper Chapter | 종이청첩장 커스텀 스튜디오 Pro</title>
   <!-- Google Fonts: 9 Fonts (5 English + 4 Korean) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +42,7 @@
       --paper-accent: #C5A059;
       --paper-muted: #8C8578;
       --paper-border: #EAE6DD;
-      --paper-card-bg: rgba(255, 255, 255, 0.65);
+      --paper-card-bg: rgba(255, 255, 255, 0.7);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
@@ -78,7 +78,7 @@
 
     /* Header */
     header {
-      height: 54px;
+      height: 52px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       padding: 0 16px;
@@ -90,7 +90,7 @@
     }
     .brand-title {
       font-family: var(--font-cormorant);
-      font-size: 17px;
+      font-size: 16px;
       letter-spacing: 0.18em;
       font-weight: 600;
       color: var(--charcoal);
@@ -119,68 +119,60 @@
     }
     .mobile-nav-btn {
       flex: 1;
-      padding: 8px 4px;
+      padding: 7px 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
       border: none;
       background: transparent;
-      font-size: 11px;
-      font-weight: 500;
       color: var(--muted);
       border-radius: 6px;
       cursor: pointer;
-      text-align: center;
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
     }
     .mobile-nav-btn.active {
       background: var(--surface);
       color: var(--charcoal);
-      font-weight: 700;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
     }
 
-    /* Main Container Layout */
-    .main-container {
-      flex: 1;
+    /* Workspace Body */
+    .workspace {
       display: flex;
+      flex: 1;
       overflow: hidden;
       position: relative;
     }
 
-    /* Sidebar / Settings */
-    .sidebar-panel {
-      width: 100%;
+    /* Left Sidebar: Accordion Panel */
+    .sidebar {
+      width: 380px;
       background: var(--surface);
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
       border-right: 1px solid var(--border);
-      z-index: 30;
-    }
-    .panel-header {
-      padding: 12px 18px;
-      border-bottom: 1px solid var(--border);
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      flex-direction: column;
+      flex-shrink: 0;
+      z-index: 30;
+      overflow-y: auto;
+      transition: transform 0.25s ease;
     }
-    .panel-title {
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
+    .sidebar::-webkit-scrollbar { width: 5px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: #DCD6CA; border-radius: 10px; }
 
-    /* Accordion Item */
+    /* Accordion Components */
     .acc-item { border-bottom: 1px solid var(--border); }
     .acc-btn {
       width: 100%;
-      padding: 13px 18px;
-      background: none;
-      border: none;
+      padding: 13px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      border: none;
+      background: transparent;
       cursor: pointer;
       text-align: left;
+      transition: background 0.15s ease;
     }
     .acc-btn:hover { background: var(--linen); }
     .acc-badge {
@@ -188,8 +180,7 @@
       height: 20px;
       border-radius: 50%;
       background: var(--linen);
-      border: 1px solid var(--border-dark);
-      color: var(--gold);
+      color: var(--muted);
       font-size: 10px;
       font-weight: 700;
       display: flex;
@@ -197,670 +188,1114 @@
       justify-content: center;
       margin-right: 10px;
       flex-shrink: 0;
+      border: 1px solid var(--border);
+    }
+    .acc-item.highlight .acc-badge {
+      background: var(--gold);
+      color: #FFF;
+      border-color: var(--gold);
     }
     .acc-title { font-size: 12px; font-weight: 600; color: var(--charcoal); }
     .acc-desc { font-size: 10px; color: var(--muted); margin-top: 2px; }
     .acc-chevron { color: var(--muted); font-size: 12px; transition: transform 0.2s ease; }
     .acc-body {
-      padding: 4px 18px 16px 18px;
+      padding: 14px 16px;
+      background: #FAF8F5;
+      border-top: 1px solid var(--border);
       display: flex;
       flex-direction: column;
       gap: 12px;
     }
     .acc-body.collapsed { display: none; }
 
-    /* Form Controls */
-    .field-label {
+    /* Base Template Gallery Cards */
+    .template-category-tabs {
+      display: flex;
+      background: #EAE6DD;
+      padding: 3px;
+      border-radius: 6px;
+      gap: 3px;
+      margin-bottom: 6px;
+    }
+    .template-tab-btn {
+      flex: 1;
+      padding: 5px 2px;
       font-size: 10px;
       font-weight: 600;
+      border: none;
+      background: transparent;
       color: var(--muted);
-      margin-bottom: 5px;
-      display: block;
-    }
-    .input-text, .input-textarea, .select-custom {
-      width: 100%;
-      border: 1px solid var(--border-dark);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: var(--charcoal);
-      background: var(--surface);
-      outline: none;
-      font-family: inherit;
-    }
-    .input-text:focus, .input-textarea:focus, .select-custom:focus {
-      border-color: var(--gold);
-      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.15);
-    }
-
-    /* Grids */
-    .grid-5 { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
-    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; }
-
-    .card-choice {
-      border: 1px solid var(--border-dark);
-      background: var(--surface);
-      border-radius: 6px;
-      padding: 8px 4px;
-      text-align: center;
+      border-radius: 4px;
       cursor: pointer;
+      text-align: center;
+    }
+    .template-tab-btn.active {
+      background: #FFF;
+      color: var(--charcoal);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+    }
+
+    .template-card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+    .template-card {
+      background: #FFF;
+      border: 1.5px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
+      text-align: center;
+      position: relative;
+    }
+    .template-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+    }
+    .template-card.active {
+      border-color: var(--gold);
+      background: var(--gold-light);
+    }
+    .template-preview-box {
+      width: 100%;
+      height: 70px;
+      border-radius: 4px;
+      background: #FAF7F2;
+      border: 1px solid #EAE5DC;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 6px;
+      overflow: hidden;
+      position: relative;
+    }
+    .template-name { font-size: 11px; font-weight: 600; color: var(--charcoal); margin-bottom: 2px; }
+    .template-tag { font-size: 9px; color: var(--gold); font-weight: 600; }
+
+    /* Selection Card Grids */
+    .card-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .card-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+    .card-choice {
+      padding: 9px 8px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      border-radius: 6px;
+      cursor: pointer;
+      text-align: center;
       transition: all 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     }
     .card-choice:hover { border-color: var(--gold); }
     .card-choice.active {
-      border: 2px solid var(--gold);
+      border-color: var(--gold);
       background: var(--gold-light);
     }
-    .card-choice-title { font-size: 11px; font-weight: 600; }
+    .card-choice-title { font-size: 11px; font-weight: 600; color: var(--charcoal); }
     .card-choice-desc { font-size: 9px; color: var(--muted); margin-top: 2px; }
 
-    /* Color Swatch Card */
+    /* 10 Theme Color Swatches */
+    .swatch-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+    }
     .swatch-card {
-      border: 1px solid var(--border-dark);
+      border: 1.5px solid var(--border);
       border-radius: 6px;
       padding: 6px 4px;
+      background: #FFF;
       cursor: pointer;
+      text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
       transition: all 0.15s ease;
-      background: var(--surface);
     }
     .swatch-card:hover { border-color: var(--gold); }
-    .swatch-card.active { border: 2px solid var(--gold); background: var(--gold-light); }
+    .swatch-card.active { border-color: var(--gold); background: var(--gold-light); }
     .swatch-preview {
-      width: 24px;
-      height: 24px;
+      width: 22px;
+      height: 22px;
       border-radius: 50%;
-      border: 1px solid rgba(0,0,0,0.15);
+      border: 1px solid rgba(0,0,0,0.1);
       margin-bottom: 4px;
       position: relative;
-      overflow: hidden;
     }
-    .swatch-name { font-size: 9.5px; font-weight: 600; text-align: center; line-height: 1.2; }
+    .swatch-name { font-size: 9px; font-weight: 500; color: var(--charcoal); white-space: nowrap; }
 
-    /* Studio / Canvas Area */
-    .studio-area {
+    /* Input & Form Styling */
+    .form-group { display: flex; flex-direction: column; gap: 4px; }
+    .form-label { font-size: 11px; font-weight: 600; color: var(--body); }
+    .input-text, .select-custom, .textarea-custom {
+      width: 100%;
+      padding: 7px 10px;
+      border: 1px solid var(--border-dark);
+      background: #FFFFFF;
+      border-radius: 5px;
+      font-size: 11px;
+      font-family: inherit;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .input-text:focus, .select-custom:focus, .textarea-custom:focus {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.15);
+    }
+    .textarea-custom { resize: vertical; min-height: 50px; line-height: 1.4; }
+
+    /* Center Canvas Area */
+    .canvas-viewport {
       flex: 1;
-      background: var(--bg);
+      background: #EDE8DF;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
-      overflow: auto;
-      padding: 14px 10px 40px 10px;
-      -webkit-overflow-scrolling: touch;
+      padding: 16px;
+      overflow-y: auto;
       position: relative;
     }
+    .canvas-viewport::-webkit-scrollbar { width: 6px; }
+    .canvas-viewport::-webkit-scrollbar-thumb { background: #D0C9BA; border-radius: 10px; }
 
-    /* Floating Studio Toolbar */
-    .studio-toolbar {
+    /* Top Canvas Action Bar */
+    .canvas-toolbar {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba(255, 255, 255, 0.92);
       backdrop-filter: blur(8px);
-      padding: 5px 8px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 30px;
       border: 1px solid var(--border);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      margin-bottom: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      margin-bottom: 14px;
       z-index: 20;
       flex-wrap: wrap;
       justify-content: center;
     }
     .tool-btn {
-      padding: 4px 10px;
+      padding: 5px 11px;
       font-size: 11px;
       font-weight: 600;
+      border-radius: 20px;
       border: 1px solid var(--border-dark);
-      background: white;
+      background: #FFFFFF;
       color: var(--charcoal);
-      border-radius: 4px;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 4px;
+      transition: all 0.15s ease;
     }
     .tool-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .tool-btn.primary {
+      background: var(--gold-light);
+      border-color: var(--gold);
+      color: var(--gold);
+    }
+    .tool-btn.dark {
+      background: var(--charcoal);
+      border-color: var(--charcoal);
+      color: #FFF;
+    }
 
-    /* ================= DYNAMIC PAPER MOCKUP ================= */
+    /* Side Toggle Pill */
+    .side-pill {
+      display: flex;
+      background: #EAE6DD;
+      padding: 2px;
+      border-radius: 20px;
+      gap: 2px;
+    }
+    .side-pill-btn {
+      padding: 4px 10px;
+      font-size: 10px;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 16px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .side-pill-btn.active {
+      background: #FFF;
+      color: var(--charcoal);
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+
+    /* ================= REAL 3D PAPER MOCKUP CONTAINER ================= */
     .paper-mockup {
       position: relative;
-      border-radius: 2px;
       margin: 10px auto;
       flex-shrink: 0;
-      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.22), 0 0 1px 1px rgba(0,0,0,0.06);
-      transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      /* Physical 350gsm Cardstock: Deep multi-stage ambient shadow and crisp physical bevel */
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.04),
+        0 10px 22px -4px rgba(35, 25, 15, 0.18),
+        0 28px 55px -10px rgba(35, 25, 15, 0.24),
+        0 55px 100px -20px rgba(35, 25, 15, 0.18),
+        inset 0 1.5px 1px rgba(255, 255, 255, 0.95),  /* Top edge light reflection */
+        inset 1.5px 0 1px rgba(255, 255, 255, 0.75),  /* Left edge light reflection */
+        inset 0 -1.5px 2px rgba(0, 0, 0, 0.08),       /* Bottom thickness bevel */
+        inset -1.5px 0 2px rgba(0, 0, 0, 0.06);       /* Right thickness bevel */
+      border: 1px solid rgba(215, 206, 192, 0.75);
+      outline: 1px solid rgba(255, 255, 255, 0.85);
+      outline-offset: -1px;
+      border-radius: 4px;
       background-color: var(--paper-bg);
       color: var(--paper-text);
       overflow: hidden;
+      transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), height 0.35s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     /* Spec Dimensions */
-    .mockup-postcard { width: 330px; height: 495px; padding: 22px 18px; }
-    .mockup-fold2 { width: 360px; height: 270px; padding: 14px 12px; }
-    .mockup-ticket { width: 250px; height: 500px; padding: 20px 14px; }
+    .mockup-postcard { width: 330px; height: 495px; padding: 20px 16px; }
+    .mockup-fold2 { width: 370px; height: 275px; padding: 14px 12px; }
+    .mockup-ticket { width: 250px; height: 510px; padding: 18px 14px; }
 
-    /* Paper Textures (Visual Realism) */
-    .tex-tintoretto {
-      background-image: radial-gradient(#E8E2D8 0.85px, transparent 0.85px);
-      background-size: 13px 13px;
-    }
-    .tex-extra {
-      background-image: radial-gradient(#F0EFEA 0.5px, transparent 0.5px);
-      background-size: 9px 9px;
-    }
-    .tex-linen {
-      background-image: repeating-linear-gradient(0deg, rgba(200,190,175,0.25) 0px, transparent 1px, transparent 4px),
-                        repeating-linear-gradient(90deg, rgba(200,190,175,0.25) 0px, transparent 1px, transparent 4px);
-    }
-    .tex-kraft {
-      background-color: #D9C2A7 !important;
-      background-image: radial-gradient(rgba(120, 90, 60, 0.2) 0.8px, transparent 0.8px),
-                        repeating-linear-gradient(45deg, rgba(160, 130, 95, 0.12) 0px, transparent 2px, transparent 6px) !important;
-      background-size: 12px 12px, 8px 8px;
-    }
-    .tex-pearl {
-      background-image: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.85) 0%, transparent 60%),
-                        radial-gradient(rgba(212, 175, 55, 0.25) 1px, transparent 1px);
-      background-size: 100% 100%, 14px 14px;
+    /* Studio 3D Lighting Overlay */
+    .paper-lighting-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+      background: linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.06) 35%, rgba(0,0,0,0.02) 65%, rgba(0,0,0,0.09) 100%);
+      mix-blend-mode: overlay;
     }
 
-    /* Bleed & Fold Guidelines */
+    /* Organic Tactile Paper Textures (SVG Based) */
+    .paper-texture-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 5;
+    }
+    
+    /* 1. 띤또레또 (Tintoretto): 올록볼록 펠트 엠보싱 요철감 */
+    .tex-tintoretto .paper-texture-layer {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><filter id="f"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="4" result="n"/><feDiffuseLighting in="n" lighting-color="%23fff" surfaceScale="2" result="l"><feDistantLight azimuth="55" elevation="55"/></feDiffuseLighting><feComponentTransfer in="l"><feFuncR type="linear" slope="0.8" intercept="0.2"/><feFuncG type="linear" slope="0.8" intercept="0.2"/><feFuncB type="linear" slope="0.8" intercept="0.2"/></feComponentTransfer></filter><rect width="100%" height="100%" fill="%23FAF7F0" filter="url(%23f)"/></svg>');
+      background-repeat: repeat;
+      mix-blend-mode: multiply;
+      opacity: 0.85;
+    }
+
+    /* 2. 리넨 패브릭 (Linen): 씨실과 날실이 교차 직조된 캔버스 섬유결 */
+    .tex-linen .paper-texture-layer {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect width="24" height="24" fill="%23FDFBF7"/><path d="M0 0h24v1.5H0zM0 6h24v1.5H0zM0 12h24v1.5H0zM0 18h24v1.5H0z" fill="rgba(150,135,115,0.18)"/><path d="M0 0v24h1.5V0zM6 0v24h1.5V0zM12 0v24h1.5V0zM18 0v24h1.5V0z" fill="rgba(150,135,115,0.18)"/><path d="M2 2h3v3H2zM8 2h3v3H8zM14 2h3v3h-3zM20 2h3v3h-3z" fill="rgba(190,175,155,0.22)"/><path d="M2 8h3v3H2zM8 8h3v3H8zM14 8h3v3h-3zM20 8h3v3h-3z" fill="rgba(190,175,155,0.22)"/><path d="M2 14h3v3H2zM8 14h3v3H8zM14 14h3v3h-3zM20 14h3v3h-3z" fill="rgba(190,175,155,0.22)"/><path d="M2 20h3v3H2zM8 20h3v3H8zM14 20h3v3h-3zM20 20h3v3h-3z" fill="rgba(190,175,155,0.22)"/></svg>');
+      background-repeat: repeat;
+      mix-blend-mode: multiply;
+      opacity: 0.95;
+    }
+
+    /* 3. 엑스트라매트 (Extra Matt): 묵직한 무광 벨벳 파우더 코팅 */
+    .tex-extra .paper-texture-layer {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><filter id="m"><feTurbulence type="fractalNoise" baseFrequency="0.75" numOctaves="3" result="n"/><feColorMatrix type="matrix" values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.14 0"/></filter><rect width="100%" height="100%" fill="%23fff"/><rect width="100%" height="100%" filter="url(%23m)"/></svg>');
+      mix-blend-mode: multiply;
+      opacity: 0.7;
+    }
+
+    /* 4. 크라프트지 (Kraft): 자연 목재 펄프 섬유(Fibers & flecks) */
+    .tex-kraft .paper-texture-layer {
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120"><rect width="100%" height="100%" fill="%23D8BE9B"/><circle cx="15" cy="25" r="1.2" fill="%237A5833" opacity="0.45"/><circle cx="75" cy="45" r="0.9" fill="%235E4327" opacity="0.5"/><circle cx="45" cy="95" r="1.4" fill="%237A5833" opacity="0.4"/><circle cx="105" cy="80" r="1" fill="%234A341E" opacity="0.5"/><circle cx="30" cy="65" r="0.8" fill="%234A341E" opacity="0.4"/><circle cx="90" cy="15" r="1.1" fill="%236B4D2B" opacity="0.45"/><line x1="20" y1="70" x2="28" y2="74" stroke="%23664928" stroke-width="0.7" opacity="0.4"/><line x1="80" y1="20" x2="86" y2="27" stroke="%23664928" stroke-width="0.8" opacity="0.35"/><line x1="55" y1="105" x2="65" y2="103" stroke="%2352391C" stroke-width="0.7" opacity="0.4"/><line x1="10" y1="110" x2="18" y2="106" stroke="%2352391C" stroke-width="0.6" opacity="0.35"/></svg>');
+      background-repeat: repeat;
+      mix-blend-mode: multiply;
+      opacity: 0.95;
+    }
+
+    /* 5. 스타드림 펄 (Stardream Pearl): 은은한 샴페인 골드 쉬머 펄 반사광 */
+    .tex-pearl .paper-texture-layer {
+      background:
+        radial-gradient(circle at 35% 25%, rgba(255, 255, 255, 0.85) 0%, rgba(245, 235, 215, 0.35) 30%, rgba(215, 195, 150, 0.12) 65%, transparent 100%),
+        linear-gradient(135deg, rgba(255,255,255,0.4) 0%, rgba(230,210,170,0.15) 50%, rgba(255,255,255,0.3) 100%);
+      mix-blend-mode: overlay;
+      opacity: 0.9;
+    }
+
+    /* 2단 접지 중앙 오시선 (3D Crease) */
+    .crease-3d {
+      position: absolute;
+      top: 0; bottom: 0; left: 50%; width: 3px;
+      transform: translateX(-50%);
+      background: linear-gradient(to right, rgba(0,0,0,0.15), rgba(255,255,255,0.65));
+      box-shadow: -2px 0 5px rgba(0,0,0,0.06), 2px 0 5px rgba(255,255,255,0.4);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* 티켓형 절취선 및 반원형 펀칭 홈 (Ticket Perforation & Stub) */
+    .ticket-stub-line {
+      position: absolute;
+      left: 0; right: 0; bottom: 120px; height: 1px;
+      border-top: 1.5px dashed rgba(160, 140, 120, 0.6);
+      z-index: 10;
+      pointer-events: none;
+    }
+    .ticket-notch-left {
+      position: absolute;
+      left: -10px; bottom: 110px; width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #EDE8DF;
+      box-shadow: inset -2px 0 3px rgba(0,0,0,0.12);
+      z-index: 12;
+      pointer-events: none;
+    }
+    .ticket-notch-right {
+      position: absolute;
+      right: -10px; bottom: 110px; width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #EDE8DF;
+      box-shadow: inset 2px 0 3px rgba(0,0,0,0.12);
+      z-index: 12;
+      pointer-events: none;
+    }
+
+    /* 3mm Print Bleed Guide */
     .guide-box {
       position: absolute;
-      top: 10px; right: 10px; bottom: 10px; left: 10px;
-      border: 1px dashed var(--gold-border);
+      top: 12px; bottom: 12px; left: 12px; right: 12px;
+      border: 1px dashed rgba(197, 160, 89, 0.45);
       pointer-events: none;
-      z-index: 25;
-    }
-    .guide-fold-line {
-      position: absolute;
-      top: 0; bottom: 0; left: 50%;
-      border-right: 1.5px dashed rgba(160, 140, 120, 0.65);
-      pointer-events: none;
-      z-index: 25;
+      z-index: 9;
     }
 
-    /* ================= DRAGGABLE ELEMENT ENGINE ================= */
-    .drag-element {
+    /* Draggable Canvas Element Wrapper */
+    .canvas-el {
       position: absolute;
-      cursor: grab;
+      cursor: move;
+      transition: outline 0.1s ease;
       touch-action: none;
-      transition: outline 0.15s ease, box-shadow 0.15s ease;
-      z-index: 10;
+      user-select: none;
+      z-index: 15;
     }
-    .drag-element:active { cursor: grabbing; }
-    .drag-element.selected {
-      outline: 1.5px solid var(--gold);
-      outline-offset: 3px;
-      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.2);
+    .canvas-el:hover {
+      outline: 1px dashed var(--gold-border);
     }
-    .drag-handle-corner {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      background: var(--gold);
-      border: 1px solid white;
-      border-radius: 1px;
-      display: none;
+    .canvas-el.selected {
+      outline: 2px solid var(--gold) !important;
+      outline-offset: 2px;
+      z-index: 25 !important;
     }
-    .drag-element.selected .drag-handle-corner { display: block; }
-    .dh-tl { top: -5px; left: -5px; }
-    .dh-tr { top: -5px; right: -5px; }
-    .dh-bl { bottom: -5px; left: -5px; }
-    .dh-br { bottom: -5px; right: -5px; }
 
-    /* Frame Styling */
-    .frame-wrapper {
-      position: relative;
-      margin: 0 auto;
-      transition: all 0.25s ease;
+    /* Interactive Element Floating Toolbar */
+    .el-floating-bar {
+      position: absolute;
+      top: -34px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--charcoal);
+      color: #FFF;
+      padding: 3px 6px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10px;
+      white-space: nowrap;
+      z-index: 40;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
+    .el-floating-btn {
+      background: transparent;
+      border: none;
+      color: #FFF;
+      font-size: 10px;
+      padding: 2px 5px;
+      cursor: pointer;
+      border-radius: 3px;
+    }
+    .el-floating-btn:hover { background: rgba(255,255,255,0.2); }
+    .el-floating-btn.danger { color: #FF7B7B; }
+
+    /* Photo Frame Shapes */
+    .frame-shape-rect { border-radius: 2px; }
+    .frame-shape-round { border-radius: 12px; }
+    .frame-shape-arch {
+      border-radius: 140px 140px 4px 4px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+      border: 1px solid var(--gold-border);
+    }
+    .frame-shape-lace {
+      border: 7px solid #FAF8F5;
+      outline: 1px solid var(--gold-border);
+      border-radius: 2px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .frame-shape-polaroid {
+      background: #FFF;
+      padding: 6px 6px 20px 6px;
+      border-radius: 2px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      border: 1px solid #EAE5DC;
+    }
+
+    /* Modal / Popups */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.45);
+      backdrop-filter: blur(4px);
       display: flex;
       align-items: center;
       justify-content: center;
+      z-index: 100;
     }
-    .frame-lace {
-      border: 2px double rgba(197, 160, 89, 0.85);
-      padding: 6px;
-      background: rgba(255, 255, 255, 0.45);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-    .frame-goldline {
-      border: 1px solid var(--gold);
-      padding: 4px;
-      background: rgba(255, 255, 255, 0.2);
-    }
-    .frame-arch {
-      border: 1.5px solid var(--gold);
-      padding: 4px;
-      border-radius: 120px 120px 0 0;
-      background: rgba(255, 255, 255, 0.35);
-    }
-    .frame-arch .photo-clip { border-radius: 116px 116px 0 0; }
-    .frame-none { border: none; padding: 0; background: transparent; }
-
-    .photo-clip {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      background: #EAE6DF;
-      position: relative;
-    }
-    .photo-clip img { width: 100%; height: 100%; object-fit: cover; display: block; pointer-events: none; }
-
-    /* Print Specs Panel */
-    .specs-panel {
-      width: 100%;
-      background: var(--surface);
-      overflow-y: auto;
-      padding: 18px;
-    }
-    .spec-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 7px 0;
-      font-size: 11px;
-      border-bottom: 1px solid var(--border);
+    .modal-content {
+      width: 90%;
+      max-width: 440px;
+      background: #FFF;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     }
 
-    /* Responsive Desktop Expansion */
-    @media (min-width: 1024px) {
-      .mobile-nav { display: none; }
-      .sidebar-panel { width: 340px; display: block !important; }
-      .studio-area { display: flex !important; }
-      .specs-panel { width: 300px; border-left: 1px solid var(--border); display: block !important; }
-
-      .mockup-postcard { width: 420px; height: 630px; padding: 32px 28px; }
-      .mockup-fold2 { width: 720px; height: 540px; padding: 28px 24px; }
-      .mockup-ticket { width: 320px; height: 640px; padding: 28px 20px; }
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .workspace { flex-direction: column; }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 48vh;
+        border-right: none;
+        border-top: 1px solid var(--border);
+        order: 2;
+      }
+      .canvas-viewport { order: 1; flex: 1; min-height: 52vh; }
     }
   </style>
 </head>
 <body>
 
-  <!-- ================= TOP HEADER ================= -->
+  <!-- Top Navigation Bar -->
   <header>
     <div class="flex items-center">
       <span class="brand-title">THE PAPER CHAPTER</span>
-      <span class="brand-badge">Studio Pro</span>
+      <span class="brand-badge">PRO v3.5</span>
     </div>
-
-    <!-- Right Controls -->
     <div class="flex items-center" style="gap: 8px;">
-      <label class="flex items-center" style="font-size: 11px; color: var(--muted); cursor: pointer; gap: 4px;">
-        <input type="checkbox" id="chkBleed" checked style="accent-color: var(--gold);">
-        <span style="font-size: 10px;">가이드선</span>
-      </label>
-
-      <button id="btnExport" style="background: var(--charcoal); color: white; border: none; padding: 6px 12px; font-size: 11px; font-weight: 600; border-radius: 4px; cursor: pointer;">
-        🖨️ 인쇄용 다운로드
+      <button class="tool-btn dark" onclick="openExportModal()">
+        💾 인쇄 발주 스펙 (300DPI)
       </button>
     </div>
   </header>
 
-  <!-- ================= MOBILE NAVIGATION TABS ================= -->
-  <nav class="mobile-nav">
-    <button class="mobile-nav-btn active" id="tabBtnStudio" onclick="switchMobileTab('studio')">
-      📄 청첩장 도안 뷰
-    </button>
-    <button class="mobile-nav-btn" id="tabBtnSettings" onclick="switchMobileTab('settings')">
-      ⚙️ 도안 설정 (Step 1~6)
-    </button>
-    <button class="mobile-nav-btn" id="tabBtnSpecs" onclick="switchMobileTab('specs')">
-      🖨️ 인쇄 규격
-    </button>
-  </nav>
+  <!-- Mobile Segmented Navigation Tabs -->
+  <div class="mobile-nav">
+    <button class="mobile-nav-btn active" id="mTabTemplates" onclick="switchMobileTab('templates')">🎨 템플릿 (9종)</button>
+    <button class="mobile-nav-btn" id="mTabCanvas" onclick="switchMobileTab('canvas')">📄 도안 뷰</button>
+    <button class="mobile-nav-btn" id="mTabSettings" onclick="switchMobileTab('settings')">⚙️ 디자인 설정</button>
+  </div>
 
-  <!-- ================= MAIN WORKSPACE ================= -->
-  <div class="main-container">
+  <div class="workspace">
 
-    <!-- ================= LEFT SETTINGS ACCORDION ================= -->
-    <aside class="sidebar-panel hidden" id="panelSettings">
-      <div class="panel-header">
-        <span class="panel-title">DESIGN STEPS</span>
-        <span style="font-size: 10px; color: var(--gold); font-weight: 600;">실시간 도안 설정</span>
-      </div>
+    <!-- LEFT SIDEBAR: ACCORDION SETTINGS & BASE TEMPLATES -->
+    <aside class="sidebar" id="sidebarPanel">
 
-      <!-- STEP 1. 감성 색감 세트 10종 -->
-      <div class="acc-item">
+      <!-- STEP 1: CURATED BASE TEMPLATES (9 TRENDING DESIGNS) -->
+      <div class="acc-item highlight">
         <button class="acc-btn" onclick="toggleAcc(1)">
           <div class="flex items-center">
             <div class="acc-badge">1</div>
             <div>
-              <div class="acc-title">감성 테마 색감 세트 (10종)</div>
-              <div class="acc-desc">배경·텍스트·골드박 조화 추천 조합</div>
+              <div class="acc-title">최신 감성 기초 템플릿 (9종)</div>
+              <div class="acc-desc">엽서형 · 2단 접지 · 티켓형 최신 트렌드 디자인</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-1">▾</span>
         </button>
         <div class="acc-body" id="accBody-1">
-          <label class="field-label">웨딩 테마 컬러 팔레트 선택</label>
-          <div class="grid-5" id="colorPaletteGrid"></div>
+          <!-- Template Spec Tabs -->
+          <div class="template-category-tabs">
+            <button class="template-tab-btn active" id="tabSpecPostcard" onclick="switchTemplateCategory('postcard')">엽서형 (3종)</button>
+            <button class="template-tab-btn" id="tabSpecFold2" onclick="switchTemplateCategory('fold2')">2단 접지 (3종)</button>
+            <button class="template-tab-btn" id="tabSpecTicket" onclick="switchTemplateCategory('ticket')">티켓형 (3종)</button>
+          </div>
+
+          <!-- Template Cards Grid -->
+          <div class="template-card-grid" id="templateCardContainer">
+            <!-- Dynamically populated by JS -->
+          </div>
         </div>
       </div>
 
-      <!-- STEP 2. 용지 형태 & 질감 시뮬레이션 (5종) -->
+      <!-- STEP 2: PHOTO MANAGEMENT & ADD PHOTO -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(2)">
           <div class="flex items-center">
             <div class="acc-badge">2</div>
             <div>
-              <div class="acc-title">용지 형태 및 재질 시뮬레이션</div>
-              <div class="acc-desc">엽서, 2단 접지, 티켓 및 특수지 5종</div>
+              <div class="acc-title">사진 관리 & 액자 스타일</div>
+              <div class="acc-desc">사진 추가, 아치/레이스 프레임, 흑백 필터</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-2">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-2">
-          <div>
-            <label class="field-label">인쇄 형태 선택</label>
-            <div class="grid-3">
-              <div class="card-choice active" onclick="setSpec('postcard', this)">
-                <div style="width: 14px; height: 22px; border: 1.5px solid var(--gold); background: white; margin-bottom: 4px;"></div>
-                <div class="card-choice-title">엽서형</div>
-                <div class="card-choice-desc">100×150</div>
-              </div>
-              <div class="card-choice" onclick="setSpec('fold2', this)">
-                <div style="width: 28px; height: 18px; border: 1px solid var(--border-dark); background: white; margin-bottom: 4px; display: flex;"><div style="width:50%; border-right: 1px dashed #CCC;"></div></div>
-                <div class="card-choice-title">2단 접지</div>
-                <div class="card-choice-desc">200×150</div>
-              </div>
-              <div class="card-choice" onclick="setSpec('ticket', this)">
-                <div style="width: 11px; height: 22px; border: 1px solid var(--border-dark); background: white; margin-bottom: 4px;"></div>
-                <div class="card-choice-title">티켓형</div>
-                <div class="card-choice-desc">75×150</div>
-              </div>
-            </div>
-          </div>
+          <button class="tool-btn primary w-full justify-center" onclick="triggerPhotoUpload()" style="padding: 9px;">
+            📷 사진 추가하기 (내 사진 / 샘플)
+          </button>
+          <input type="file" id="fileUploadHidden" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
 
-          <div>
-            <label class="field-label">종이 재질 시뮬레이션 (5종)</label>
-            <div class="grid-2">
-              <div class="card-choice active" onclick="setTexture('tintoretto', this)" style="padding: 7px; flex-direction: row; gap: 6px;">
-                <span style="width: 12px; height: 12px; border-radius: 50%; background: #FAF8F5; border: 1px solid #CCC;"></span>
-                <span style="font-size: 11px;">띤또레또 (코튼 펠트)</span>
-              </div>
-              <div class="card-choice" onclick="setTexture('extra', this)" style="padding: 7px; flex-direction: row; gap: 6px;">
-                <span style="width: 12px; height: 12px; border-radius: 50%; background: #FFFFFF; border: 1px solid #CCC;"></span>
-                <span style="font-size: 11px;">엑스트라매트 (순백 무광)</span>
-              </div>
-              <div class="card-choice" onclick="setTexture('linen', this)" style="padding: 7px; flex-direction: row; gap: 6px;">
-                <span style="width: 12px; height: 12px; border-radius: 50%; background: #F8F5EE; border: 1px solid #CCC;"></span>
-                <span style="font-size: 11px;">리넨 격자 패브릭</span>
-              </div>
-              <div class="card-choice" onclick="setTexture('kraft', this)" style="padding: 7px; flex-direction: row; gap: 6px;">
-                <span style="width: 12px; height: 12px; border-radius: 50%; background: #D9C2A7; border: 1px solid #997;"></span>
-                <span style="font-size: 11px;">크라프트지 (내추럴)</span>
-              </div>
-              <div class="card-choice" onclick="setTexture('pearl', this)" style="padding: 7px; flex-direction: row; gap: 6px; grid-column: span 2;">
-                <span style="width: 12px; height: 12px; border-radius: 50%; background: #FFFDF8; border: 1px solid #D4AF37;"></span>
-                <span style="font-size: 11px;">스타드림 펄 (은은한 골드 펄)</span>
-              </div>
-            </div>
+          <div style="font-size: 11px; font-weight: 600; color: var(--body); margin-top: 4px;">캔버스 사진 목록</div>
+          <div id="sidebarPhotoList" style="display: flex; flex-direction: column; gap: 6px;">
+            <!-- Rendered by JS -->
           </div>
         </div>
       </div>
 
-      <!-- STEP 3. 폰트 선택 시스템 (영어/한글 9종) -->
+      <!-- STEP 3: PAPER SPEC & REALISTIC 3D TEXTURE -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(3)">
           <div class="flex items-center">
             <div class="acc-badge">3</div>
             <div>
-              <div class="acc-title">글씨체 (폰트 9종)</div>
-              <div class="acc-desc">영문 에디토리얼 5종 & 한글 감성명조 4종</div>
+              <div class="acc-title">용지 형태 및 입체 종이재질</div>
+              <div class="acc-desc">펠트 엠보싱, 리넨 직조, 엑스트라매트 등 5종</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-3">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-3">
-          <div>
-            <label class="field-label">영문 타이포 폰트</label>
-            <select id="selFontEn" class="select-custom" onchange="changeFontEn(this.value)">
-              <option value="var(--font-bodoni)" selected>Bodoni Moda (하이엔드 볼드 세리프)</option>
-              <option value="var(--font-cormorant)">Cormorant Garamond (클래식 감성)</option>
-              <option value="var(--font-playfair)">Playfair Display (우아한 로맨틱)</option>
-              <option value="var(--font-cinzel)">Cinzel (로마 석판 대성당체)</option>
-              <option value="var(--font-montserrat)">Montserrat (모던 미니멀 산세리프)</option>
-            </select>
+          <div class="form-group">
+            <div class="form-label">용지 규격</div>
+            <div class="card-grid-3">
+              <div class="card-choice active" id="specPostcard" onclick="setSpec('postcard')">
+                <span class="card-choice-title">엽서형</span>
+                <span class="card-choice-desc">100×150mm</span>
+              </div>
+              <div class="card-choice" id="specFold2" onclick="setSpec('fold2')">
+                <span class="card-choice-title">2단 접지</span>
+                <span class="card-choice-desc">200×150mm</span>
+              </div>
+              <div class="card-choice" id="specTicket" onclick="setSpec('ticket')">
+                <span class="card-choice-title">티켓형</span>
+                <span class="card-choice-desc">75×150mm</span>
+              </div>
+            </div>
           </div>
-          <div>
-            <label class="field-label">한글 본문 폰트</label>
-            <select id="selFontKr" class="select-custom" onchange="changeFontKr(this.value)">
-              <option value="var(--font-notoserif)" selected>Noto Serif KR (정갈한 본명조)</option>
-              <option value="var(--font-nanum)">Nanum Myeongjo (서정적인 나눔명조)</option>
-              <option value="var(--font-songmyung)">Song Myung (클래식 빈티지 송명조)</option>
-              <option value="var(--font-sans)">Pretendard (현대적인 깔끔한 고딕)</option>
-            </select>
+
+          <div class="form-group" style="margin-top: 6px;">
+            <div class="form-label">입체 특수지 질감 시뮬레이션</div>
+            <div class="card-grid-2">
+              <div class="card-choice active" id="texTintoretto" onclick="setTexture('tintoretto')">
+                <span class="card-choice-title">띤또레또 350g</span>
+                <span class="card-choice-desc">펠트 엠보싱 요철감</span>
+              </div>
+              <div class="card-choice" id="texLinen" onclick="setTexture('linen')">
+                <span class="card-choice-title">리넨 패브릭 350g</span>
+                <span class="card-choice-desc">정밀 캔버스 직조결</span>
+              </div>
+              <div class="card-choice" id="texExtra" onclick="setTexture('extra')">
+                <span class="card-choice-title">엑스트라매트 350g</span>
+                <span class="card-choice-desc">묵직한 무광 벨벳</span>
+              </div>
+              <div class="card-choice" id="texKraft" onclick="setTexture('kraft')">
+                <span class="card-choice-title">내추럴 크라프트</span>
+                <span class="card-choice-desc">천연 펄프 섬유결</span>
+              </div>
+              <div class="card-choice" id="texPearl" onclick="setTexture('pearl')">
+                <span class="card-choice-title">스타드림 펄 300g</span>
+                <span class="card-choice-desc">샴페인 골드 쉬머</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 6px;">
+            <span style="font-size: 11px; font-weight: 600; color: var(--body);">스튜디오 3D 조명 음영</span>
+            <input type="checkbox" id="chkLighting" checked onchange="toggleLighting(this.checked)" style="accent-color: var(--gold);">
           </div>
         </div>
       </div>
 
-      <!-- STEP 4. 글상자 추가 & 커스텀 텍스트 관리 -->
+      <!-- STEP 4: 10 THEME COLOR PALETTES -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(4)">
           <div class="flex items-center">
             <div class="acc-badge">4</div>
             <div>
-              <div class="acc-title">글상자 만들기 & 텍스트 추가</div>
-              <div class="acc-desc">자유 위치 글상자 추가 및 내용 수정</div>
+              <div class="acc-title">감성 테마 색감 세트 (10종)</div>
+              <div class="acc-desc">배경 · 폰트 · 골드박 조화 추천 조합</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-4">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-4">
-          <button onclick="addCustomTextBox()" class="tool-btn w-full justify-center" style="background: var(--gold); color: white; border: none; padding: 10px; font-weight: 700; border-radius: 6px;">
-            ➕ 새 글상자 추가하기
-          </button>
-          <div id="customTextBoxList" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-            <p style="font-size: 10px; color: var(--muted); text-align: center;">추가된 글상자는 마우스/터치로 원하는 위치에 드래그할 수 있습니다.</p>
+          <div class="swatch-grid" id="colorPaletteGrid">
+            <!-- Rendered by JS -->
           </div>
         </div>
       </div>
 
-      <!-- STEP 5. 사진 & 액자 프레임 -->
+      <!-- STEP 5: FONTS & CUSTOM TEXT BOXES -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(5)">
           <div class="flex items-center">
             <div class="acc-badge">5</div>
             <div>
-              <div class="acc-title">사진 및 빈티지 액자</div>
-              <div class="acc-desc">레이스, 아치형 마스크 및 흑백 필터</div>
+              <div class="acc-title">글씨체 (폰트 9종) & 글상자 추가</div>
+              <div class="acc-desc">영문 에디토리얼 5종 & 한글 감성명조 4종</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-5">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-5">
-          <div>
-            <label class="field-label">액자 프레임 디자인</label>
-            <div class="grid-4">
-              <div class="card-choice active" onclick="setFrame('lace', this)">
-                <div style="width: 16px; height: 20px; border: 2px double var(--gold); margin-bottom: 2px;"></div>
-                <span style="font-size: 10px;">레이스#09</span>
-              </div>
-              <div class="card-choice" onclick="setFrame('goldline', this)">
-                <div style="width: 16px; height: 20px; border: 1px solid var(--gold); margin-bottom: 2px;"></div>
-                <span style="font-size: 10px;">골드선</span>
-              </div>
-              <div class="card-choice" onclick="setFrame('arch', this)">
-                <div style="width: 16px; height: 20px; border: 1.5px solid var(--gold); border-radius: 8px 8px 0 0; margin-bottom: 2px;"></div>
-                <span style="font-size: 10px;">클래식 아치</span>
-              </div>
-              <div class="card-choice" onclick="setFrame('none', this)">
-                <div style="width: 16px; height: 20px; border: 1px dashed #DDD; margin-bottom: 2px;"></div>
-                <span style="font-size: 10px;">없음</span>
-              </div>
-            </div>
+          <div class="form-group">
+            <div class="form-label">영문 폰트</div>
+            <select class="select-custom" id="selFontEn" onchange="changeFontEn(this.value)">
+              <option value="var(--font-bodoni)">Bodoni Moda (보도니 에디토리얼)</option>
+              <option value="var(--font-cormorant)">Cormorant Garamond (우아한 세리프)</option>
+              <option value="var(--font-playfair)">Playfair Display (감성 클래식)</option>
+              <option value="var(--font-cinzel)">Cinzel (로만 클래식)</option>
+              <option value="var(--font-montserrat)">Montserrat (모던 산세리프)</option>
+            </select>
           </div>
-
-          <div>
-            <label class="field-label">사진 파일 변경</label>
-            <input type="file" id="inpPhoto" accept="image/*" style="font-size: 11px;">
-            <label class="flex items-center" style="margin-top: 6px; font-size: 11px; cursor: pointer; gap: 4px;">
-              <input type="checkbox" id="chkGray" checked style="accent-color: var(--gold);">
-              <span>감성 흑백 사진 필터</span>
-            </label>
+          <div class="form-group">
+            <div class="form-label">한글 폰트</div>
+            <select class="select-custom" id="selFontKr" onchange="changeFontKr(this.value)">
+              <option value="var(--font-notoserif)">Noto Serif KR (정갈한 본문명조)</option>
+              <option value="var(--font-nanum)">Nanum Myeongjo (나눔명조 클래식)</option>
+              <option value="var(--font-songmyung)">Song Myung (송명 감성서체)</option>
+              <option value="var(--font-sans)">Pretendard (모던 깔끔 산세리프)</option>
+            </select>
           </div>
+          <button class="tool-btn w-full justify-center" onclick="addCustomTextBox()" style="margin-top: 4px;">
+            ➕ 자유 글상자 추가하기
+          </button>
         </div>
       </div>
 
-      <!-- STEP 6. 신랑신부 & 인사말 정보 -->
+      <!-- STEP 6: WEDDING INFO SYNC -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(6)">
           <div class="flex items-center">
             <div class="acc-badge">6</div>
             <div>
               <div class="acc-title">기본 예식 정보 입력</div>
-              <div class="acc-desc">성함, 일시, 모시는 글 프리셋</div>
+              <div class="acc-desc">성함, 일시, 예식장, 모시는 글 수정</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-6">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-6">
-          <div class="grid-2">
-            <div>
-              <label class="field-label">신랑 성함</label>
-              <input type="text" id="inpGroom" value="김동현" class="input-text" oninput="syncText()">
+          <div class="card-grid-2">
+            <div class="form-group">
+              <div class="form-label">신랑 성함</div>
+              <input type="text" id="inpGroom" class="input-text" value="김동현" oninput="syncText()">
             </div>
-            <div>
-              <label class="field-label">신부 성함</label>
-              <input type="text" id="inpBride" value="하은지" class="input-text" oninput="syncText()">
+            <div class="form-group">
+              <div class="form-label">신부 성함</div>
+              <input type="text" id="inpBride" class="input-text" value="하은지" oninput="syncText()">
             </div>
           </div>
-          <div>
-            <label class="field-label">예식 일시</label>
-            <input type="text" id="inpDate" value="2027년 2월 21일 일요일, 오전 11시" class="input-text" oninput="syncText()">
+          <div class="form-group">
+            <div class="form-label">예식 일시</div>
+            <input type="text" id="inpDate" class="input-text" value="2027년 2월 21일 일요일, 오전 11시" oninput="syncText()">
           </div>
-          <div>
-            <label class="field-label">예식 장소</label>
-            <input type="text" id="inpVenue" value="라포르테웨딩홀 5층 라포르테홀" class="input-text" oninput="syncText()">
+          <div class="form-group">
+            <div class="form-label">예식 장소</div>
+            <input type="text" id="inpVenue" class="input-text" value="라포르테웨딩홀 5층 라포르테홀" oninput="syncText()">
           </div>
-          <div>
-            <label class="field-label">모시는 글</label>
-            <textarea id="inpLetter" rows="3" class="input-textarea" oninput="syncText()">서로를 배려하고 아끼며 평생을 함께 걸어가고자 합니다. 새로운 시작을 따뜻한 축복으로 밝혀주세요.</textarea>
+          <div class="form-group">
+            <div class="form-label">모시는 글</div>
+            <textarea id="inpLetter" class="textarea-custom" oninput="syncText()">서로를 배려하고 아끼며 평생을 함께 걸어가고자 합니다. 새로운 시작을 따뜻한 축복으로 밝혀주세요.</textarea>
           </div>
         </div>
       </div>
 
     </aside>
 
-    <!-- ================= CENTER STUDIO / DRAGGABLE CANVAS ================= -->
-    <main class="studio-area" id="panelStudio">
+    <!-- RIGHT/CENTER: INTERACTIVE 3D CANVAS VIEWPORT -->
+    <main class="canvas-viewport" id="canvasViewport">
 
-      <!-- Studio Floating Toolbar -->
-      <div class="studio-toolbar">
-        <div class="flex" style="background: #E8E3DA; padding: 2px; border-radius: 5px; gap: 3px;">
-          <button id="btnSideF" onclick="setSide('front')" style="padding: 4px 10px; font-size: 10px; font-weight: 700; border: none; background: white; color: var(--charcoal); border-radius: 4px; cursor: pointer;">
-            앞면 (Cover)
-          </button>
-          <button id="btnSideB" onclick="setSide('back')" style="padding: 4px 10px; font-size: 10px; font-weight: 500; border: none; background: transparent; color: var(--muted); border-radius: 4px; cursor: pointer;">
-            뒷면 (Inner)
-          </button>
+      <!-- Top Floating Toolbar -->
+      <div class="canvas-toolbar">
+        <div class="side-pill">
+          <button class="side-pill-btn active" id="btnSideA" onclick="setSide('front')">앞면 (Cover)</button>
+          <button class="side-pill-btn" id="btnSideB" onclick="setSide('back')">뒷면 (Inner)</button>
         </div>
 
-        <button onclick="addCustomTextBox()" class="tool-btn" style="background: var(--gold-light); border-color: var(--gold); color: var(--gold);">
+        <button onclick="triggerPhotoUpload()" class="tool-btn primary">
+          📷 사진 추가
+        </button>
+        <button onclick="addCustomTextBox()" class="tool-btn">
           ➕ 글상자
         </button>
-        <button onclick="resetPositions()" class="tool-btn">
-          ↺ 위치 초기화
+        <button onclick="resetToTemplateDefault()" class="tool-btn">
+          ↺ 템플릿 초기화
         </button>
       </div>
 
-      <!-- Real Paper Mockup Container -->
+      <!-- Real 3D Physical Paper Container -->
       <div class="paper-mockup mockup-postcard tex-tintoretto" id="mockupPaper">
 
-        <!-- Print Bleed Overlay -->
+        <!-- 3D Studio Lighting Layer -->
+        <div class="paper-lighting-overlay" id="paperLighting"></div>
+
+        <!-- Organic Paper Texture Layer -->
+        <div class="paper-texture-layer" id="paperTexture"></div>
+
+        <!-- 3mm Print Safety Guide -->
         <div class="guide-box" id="guideBleedBox">
           <div style="position: absolute; top: 2px; right: 4px; font-size: 8px; color: var(--gold); background: rgba(255,255,255,0.85); padding: 1px 4px; border-radius: 2px; font-weight: 600;">
             안전선 (3mm 여백)
           </div>
         </div>
-        <div class="guide-fold-line hidden" id="guideFoldLine"></div>
 
-        <!-- DYNAMIC CANVAS MOUNT CONTAINER -->
-        <div id="dynamicCanvasMount" class="w-full h-full relative"></div>
+        <!-- 2-Fold Center Crease Line -->
+        <div class="crease-3d hidden" id="crease3D"></div>
+
+        <!-- Ticket Perforation & Notches -->
+        <div class="ticket-stub-line hidden" id="ticketStubLine"></div>
+        <div class="ticket-notch-left hidden" id="ticketNotchL"></div>
+        <div class="ticket-notch-right hidden" id="ticketNotchR"></div>
+
+        <!-- Dynamic Content Elements Mount -->
+        <div id="dynamicCanvasMount" class="w-full h-full relative" style="z-index: 12;" onclick="handleCanvasBgClick(event)"></div>
 
       </div>
+
     </main>
-
-    <!-- ================= RIGHT PRINT SPECS PANEL ================= -->
-    <aside class="specs-panel hidden" id="panelSpecs">
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 12px;">
-        <span class="panel-title">PRINT SPECS</span>
-        <span style="font-size: 10px; color: var(--gold); font-weight: 600;">인쇄소 발주 규격</span>
-      </div>
-
-      <div style="background: var(--linen); border: 1px solid var(--border); border-radius: 6px; padding: 12px; margin-bottom: 16px;">
-        <div class="spec-row">
-          <span style="color: var(--muted);">재단 사이즈</span>
-          <strong id="specFinish">100 × 150 mm</strong>
-        </div>
-        <div class="spec-row">
-          <span style="color: var(--muted);">작업 사이즈 (Bleed 3mm)</span>
-          <strong id="specBleed">106 × 156 mm</strong>
-        </div>
-        <div class="spec-row">
-          <span style="color: var(--muted);">해상도</span>
-          <strong style="color: var(--gold);">300 DPI (초고화질)</strong>
-        </div>
-        <div class="spec-row" style="border-bottom: none;">
-          <span style="color: var(--muted);">색상 프로파일</span>
-          <strong>CMYK 호환 RGB</strong>
-        </div>
-      </div>
-
-      <h3 style="font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase;">추천 인쇄 용지</h3>
-      <div style="display: flex; flex-direction: column; gap: 8px;">
-        <div style="border: 1px solid var(--border); padding: 8px 10px; border-radius: 6px;">
-          <div style="font-size: 11px; font-weight: 700;">띤또레또 300g</div>
-          <div style="font-size: 10px; color: var(--muted); margin-top: 2px;">코튼 엠보싱 텍스처로 가장 선호되는 청첩장 용지</div>
-        </div>
-        <div style="border: 1px solid var(--border); padding: 8px 10px; border-radius: 6px;">
-          <div style="font-size: 11px; font-weight: 700;">스타드림 골드 240g</div>
-          <div style="font-size: 10px; color: var(--muted); margin-top: 2px;">은은한 펄감으로 호텔 예식에 어울리는 고급지</div>
-        </div>
-      </div>
-
-      <div style="margin-top: 24px;">
-        <button onclick="copySpec()" style="width: 100%; border: 1px solid var(--gold); color: var(--gold); background: white; padding: 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;">
-          📋 인쇄소 접수 정보 복사하기
-        </button>
-      </div>
-    </aside>
 
   </div>
 
-  <!-- ================= JAVASCRIPT CONTROLLER & DRAG ENGINE ================= -->
+  <!-- PHOTO PICKER MODAL -->
+  <div class="modal-overlay hidden" id="photoModal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center" style="margin-bottom: 12px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: var(--charcoal);">📷 사진 추가하기</h3>
+        <button onclick="closePhotoModal()" style="border: none; background: transparent; font-size: 18px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <p style="font-size: 11px; color: var(--muted); margin-bottom: 14px;">기기에서 사진을 업로드하거나 감성 웨딩 샘플 사진 중 선택하세요.</p>
+
+      <button class="tool-btn primary w-full justify-center" onclick="document.getElementById('fileUploadHidden').click()" style="padding: 10px; margin-bottom: 14px;">
+        📁 내 기기에서 사진 업로드 (JPG, PNG)
+      </button>
+
+      <div style="font-size: 11px; font-weight: 600; color: var(--body); margin-bottom: 8px;">추천 감성 스냅 사진</div>
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px;">
+        <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=300&q=80" class="card-choice" onclick="selectSamplePhoto(this.src)" style="height: 65px; object-fit: cover; width: 100%; border-radius: 4px; padding: 0;">
+        <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=300&q=80" class="card-choice" onclick="selectSamplePhoto(this.src)" style="height: 65px; object-fit: cover; width: 100%; border-radius: 4px; padding: 0;">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=300&q=80" class="card-choice" onclick="selectSamplePhoto(this.src)" style="height: 65px; object-fit: cover; width: 100%; border-radius: 4px; padding: 0;">
+        <img src="https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=300&q=80" class="card-choice" onclick="selectSamplePhoto(this.src)" style="height: 65px; object-fit: cover; width: 100%; border-radius: 4px; padding: 0;">
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPORT & PRINT SPEC MODAL -->
+  <div class="modal-overlay hidden" id="exportModal">
+    <div class="modal-content">
+      <div class="flex justify-between items-center" style="margin-bottom: 12px;">
+        <h3 style="font-size: 14px; font-weight: 700; color: var(--charcoal);">🖨️ 인쇄소 발주 규격 (300DPI)</h3>
+        <button onclick="closeExportModal()" style="border: none; background: transparent; font-size: 18px; cursor: pointer; color: var(--muted);">&times;</button>
+      </div>
+      <div id="exportSpecDetails" style="font-size: 11px; line-height: 1.6; color: var(--body); background: var(--linen); padding: 12px; border-radius: 6px; border: 1px solid var(--border);"></div>
+      <div class="flex" style="gap: 8px; margin-top: 14px;">
+        <button class="tool-btn flex-1 justify-center" onclick="copyPrintSpec()">📋 규격 복사하기</button>
+        <button class="tool-btn primary flex-1 justify-center" onclick="closeExportModal()">확인</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT STUDIO ENGINE ================= -->
   <script>
-    // 10 Color Theme Palettes
+    // 10 Curated Theme Color Palettes
     const COLOR_THEMES = [
-      { id: 'linen', name: '리넨 아이보리', bg: '#FAF8F5', text: '#1A1A1A', accent: '#C5A059', muted: '#8C8578', border: '#EAE6DD', cardBg: 'rgba(255,255,255,0.7)' },
-      { id: 'forest', name: '포레스트 그린', bg: '#1A261D', text: '#FAF8F5', accent: '#D4AF37', muted: '#A3B19B', border: 'rgba(212,175,55,0.35)', cardBg: 'rgba(0,0,0,0.3)' },
-      { id: 'burgundy', name: '앤틱 버건디', bg: '#2B1417', text: '#FAF8F5', accent: '#E0B253', muted: '#C99E9E', border: 'rgba(224,178,83,0.35)', cardBg: 'rgba(0,0,0,0.3)' },
-      { id: 'midnight', name: '미드나잇 블루', bg: '#141E28', text: '#FAF8F5', accent: '#A8C5E5', muted: '#9AB4C9', border: 'rgba(168,197,229,0.3)', cardBg: 'rgba(0,0,0,0.3)' },
-      { id: 'dustyrose', name: '더스티 로즈', bg: '#F8EEED', text: '#3D2828', accent: '#B87272', muted: '#8F7171', border: '#E8D4D4', cardBg: 'rgba(255,255,255,0.7)' },
-      { id: 'sage', name: '세이지 그린', bg: '#EAEFE9', text: '#212E24', accent: '#587A5E', muted: '#6E8A73', border: '#D0DDD0', cardBg: 'rgba(255,255,255,0.7)' },
-      { id: 'blackwhite', name: '모던 블랙', bg: '#111111', text: '#FFFFFF', accent: '#E5E5E5', muted: '#A0A0A0', border: '#333333', cardBg: 'rgba(255,255,255,0.1)' },
-      { id: 'terracotta', name: '테라코타 샌드', bg: '#F6EEE6', text: '#3B231A', accent: '#C46445', muted: '#946E61', border: '#E5D5C8', cardBg: 'rgba(255,255,255,0.7)' },
-      { id: 'lavender', name: '소프트 라벤더', bg: '#F2EFF6', text: '#2A2433', accent: '#8C78AA', muted: '#7B6E94', border: '#DFD8E8', cardBg: 'rgba(255,255,255,0.7)' },
-      { id: 'oatmeal', name: '내추럴 모카', bg: '#EEE7DF', text: '#362A20', accent: '#8E6E50', muted: '#7E6B5A', border: '#D8CCC0', cardBg: 'rgba(255,255,255,0.7)' }
+      { id: 'linen', name: '리넨 아이보리', bg: '#FAF8F5', text: '#1A1A1A', accent: '#C5A059' },
+      { id: 'forest', name: '포레스트 그린', bg: '#1E2C22', text: '#F4EFE6', accent: '#D4AF37' },
+      { id: 'burgundy', name: '앤틱 버건디', bg: '#3D1C24', text: '#F9F5F0', accent: '#E0B589' },
+      { id: 'navy', name: '미드나잇 블루', bg: '#1A2433', text: '#F2F5F8', accent: '#C5A059' },
+      { id: 'rose', name: '더스티 로즈', bg: '#F7EBE8', text: '#3E2723', accent: '#B76E79' },
+      { id: 'sage', name: '세이지 그린', bg: '#EBF0E8', text: '#283618', accent: '#606C38' },
+      { id: 'black', name: '모던 블랙', bg: '#111111', text: '#F5F5F5', accent: '#E5C158' },
+      { id: 'terracotta', name: '테라코타 샌드', bg: '#F4ECE4', text: '#3D261D', accent: '#C86D51' },
+      { id: 'lavender', name: '소프트 라벤더', bg: '#F2EFF6', text: '#2E294E', accent: '#9B89B3' },
+      { id: 'mocha', name: '내추럴 모카', bg: '#EDE6DD', text: '#2C221E', accent: '#A67C52' }
     ];
 
-    // State Store
-    const state = {
-      spec: 'postcard',   // postcard, fold2, ticket
-      side: 'front',      // front, back
+    // 9 Trending Base Templates (Curated 2026/2027 Wedding Trend Designs)
+    const BASE_TEMPLATES = {
+      // --- 엽서형 3종 ---
+      postcard_editorial: {
+        id: 'postcard_editorial',
+        category: 'postcard',
+        name: '모던 에디토리얼',
+        tag: '#매거진스냅',
+        spec: 'postcard',
+        themeId: 'linen',
+        texture: 'tintoretto',
+        fontEn: 'var(--font-bodoni)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '상단 3:4 감성 웨딩 스냅과 볼드 세리프 타이포의 세련된 조화',
+        frontPhotos: [
+          { id: 'p1', x: 25, y: 30, w: 280, h: 220, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80' }
+        ],
+        frontTexts: [
+          { id: 't1', x: 25, y: 265, text: 'WEDDING INVITATION', font: 'var(--font-bodoni)', size: 16, weight: '700', align: 'center', letterSpacing: '0.15em', w: 280 },
+          { id: 't2', x: 25, y: 295, text: 'KIM DONGHYEON  &  HA EUNJI', font: 'var(--font-cormorant)', size: 12, weight: '600', align: 'center', letterSpacing: '0.12em', w: 280 },
+          { id: 't3', x: 25, y: 325, text: '2027. 02. 21 SUN 11:00 AM', font: 'var(--font-bodoni)', size: 11, weight: '400', align: 'center', letterSpacing: '0.1em', w: 280 },
+          { id: 't4', x: 25, y: 345, text: '대전 라포르테웨딩홀 5F 라포르테홀', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 280 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb1', x: 25, y: 35, text: 'OUR WEDDING DAY', font: 'var(--font-bodoni)', size: 13, weight: '600', align: 'center', letterSpacing: '0.18em', w: 280 },
+          { id: 'tb2', x: 30, y: 70, text: '소중한 분들을 초대합니다\n\n서로 마주 보며 다져온 사랑을\n이제 같은 곳을 바라보며 나아가고자 합니다.\n따뜻한 격려와 축복으로 함께해 주시면\n더없는 기쁨으로 간직하겠습니다.', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 },
+          { id: 'tb3', x: 30, y: 175, text: '신랑 김동현 · 신부 하은지', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 270 },
+          { id: 'tb4', x: 30, y: 220, text: '2027년 2월 21일 일요일 오전 11시\n대전 서구 문정로 40 라포르테웨딩홀 5층', font: 'var(--font-notoserif)', size: 10, weight: '500', align: 'center', w: 270 }
+        ]
+      },
+      postcard_arch: {
+        id: 'postcard_arch',
+        category: 'postcard',
+        name: '클래식 아치 & 골드',
+        tag: '#성당창문아치',
+        spec: 'postcard',
+        themeId: 'linen',
+        texture: 'tintoretto',
+        fontEn: 'var(--font-cormorant)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '우아한 성당 아치 프레임과 고급스러운 골드 라인 보더',
+        frontPhotos: [
+          { id: 'p1', x: 45, y: 40, w: 240, h: 260, shape: 'arch', grayscale: true, url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80' }
+        ],
+        frontTexts: [
+          { id: 't1', x: 25, y: 320, text: 'The Wedding of', font: 'var(--font-cormorant)', size: 13, weight: '400', align: 'center', fontStyle: 'italic', w: 280 },
+          { id: 't2', x: 25, y: 342, text: 'Donghyeon & Eunji', font: 'var(--font-playfair)', size: 17, weight: '600', align: 'center', letterSpacing: '0.08em', w: 280 },
+          { id: 't3', x: 25, y: 380, text: '2027. 02. 21', font: 'var(--font-cormorant)', size: 12, weight: '600', align: 'center', letterSpacing: '0.15em', w: 280 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb1', x: 30, y: 50, text: 'INVITATION', font: 'var(--font-cormorant)', size: 14, weight: '600', align: 'center', letterSpacing: '0.2em', w: 270 },
+          { id: 'tb2', x: 30, y: 90, text: '곁에 있을 때 가장 나다운 모습이 되는 사람을 만났습니다.\n믿음과 사랑으로 평생을 함께할 두 사람의 시작에\n귀한 걸음으로 축복해 주시기 바랍니다.', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 },
+          { id: 'tb3', x: 30, y: 200, text: '김동현 · 하은지', font: 'var(--font-notoserif)', size: 12, weight: '600', align: 'center', w: 270 }
+        ]
+      },
+      postcard_lace: {
+        id: 'postcard_lace',
+        category: 'postcard',
+        name: '빈티지 레이스 프레임',
+        tag: '#더뉴챕터오마주',
+        spec: 'postcard',
+        themeId: 'linen',
+        texture: 'linen',
+        fontEn: 'var(--font-bodoni)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '섬세한 3:4 세로 빈티지 레이스 테두리와 클래식 명조의 기품',
+        frontPhotos: [
+          { id: 'p1', x: 45, y: 35, w: 240, h: 250, shape: 'lace', grayscale: true, url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80' }
+        ],
+        frontTexts: [
+          { id: 't1', x: 30, y: 310, text: 'WEDDING DAY', font: 'var(--font-bodoni)', size: 14, weight: '700', align: 'center', letterSpacing: '0.2em', w: 270 },
+          { id: 't2', x: 30, y: 335, text: '김 동 현  ·  하 은 지', font: 'var(--font-notoserif)', size: 12, weight: '600', align: 'center', letterSpacing: '0.15em', w: 270 },
+          { id: 't3', x: 30, y: 365, text: '2027년 2월 21일 오전 11시\n대전 라포르테웨딩홀', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb1', x: 30, y: 60, text: '초 대 합 니 다', font: 'var(--font-notoserif)', size: 12, weight: '600', align: 'center', letterSpacing: '0.2em', w: 270 },
+          { id: 'tb2', x: 30, y: 100, text: '처음 만난 날의 설렘보다\n서로를 지켜주는 믿음이 깊어진 오늘,\n부부라는 이름으로 첫걸음을 뗍니다.\n오셔서 자리를 빛내주시면 감사하겠습니다.', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 }
+        ]
+      },
+
+      // --- 2단 접지 3종 ---
+      fold_magazine: {
+        id: 'fold_magazine',
+        category: 'fold2',
+        name: '시네마틱 매거진 폴드',
+        tag: '#와이드양면접지',
+        spec: 'fold2',
+        themeId: 'linen',
+        texture: 'tintoretto',
+        fontEn: 'var(--font-bodoni)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '외면에는 시네마틱 감성 스냅, 내면에는 달력과 정중한 초대글',
+        frontPhotos: [
+          { id: 'p1', x: 195, y: 25, w: 160, h: 165, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          // 뒷표지 (좌측)
+          { id: 't_back_title', x: 20, y: 70, text: 'THANK YOU', font: 'var(--font-bodoni)', size: 12, weight: '600', align: 'center', letterSpacing: '0.15em', w: 145 },
+          { id: 't_back_desc', x: 20, y: 105, text: '저희 두 사람의 새로운 시작을\n축복해 주신 모든 분들께\n깊은 감사를 드립니다.', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 145 },
+          // 앞표지 (우측)
+          { id: 't_cover_title', x: 195, y: 200, text: 'OUR WEDDING DAY', font: 'var(--font-bodoni)', size: 11, weight: '700', align: 'center', letterSpacing: '0.14em', w: 160 },
+          { id: 't_cover_name', x: 195, y: 220, text: 'Donghyeon & Eunji', font: 'var(--font-cormorant)', size: 11, weight: '600', align: 'center', w: 160 },
+          { id: 't_cover_date', x: 195, y: 240, text: '2027. 02. 21 SUN 11:00 AM', font: 'var(--font-bodoni)', size: 9, weight: '400', align: 'center', w: 160 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          // 내면 좌측: 미니 달력 & 시
+          { id: 'tb_l_cal', x: 20, y: 35, text: 'FEBRUARY 2027', font: 'var(--font-bodoni)', size: 11, weight: '600', align: 'center', letterSpacing: '0.1em', w: 145 },
+          { id: 'tb_l_poem', x: 20, y: 140, text: '우리가 사랑함은\n그가 먼저 우리를 사랑하셨음이라\n(요일 4:19)', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 145 },
+          // 내면 우측: 정중한 초대글
+          { id: 'tb_r_title', x: 195, y: 35, text: '소중한 분들을 모십니다', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 160 },
+          { id: 'tb_r_body', x: 195, y: 65, text: '서로를 배려하고 아끼며\n평생을 함께 걸어가고자 합니다.\n따뜻한 축복으로 함께해 주세요.', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 160 },
+          { id: 'tb_r_venue', x: 195, y: 175, text: '라포르테웨딩홀 5층 라포르테홀\n대전 서구 문정로 40 (탄방역 2번 출구)', font: 'var(--font-notoserif)', size: 8.5, weight: '500', align: 'center', w: 160 }
+        ]
+      },
+      fold_botanical: {
+        id: 'fold_botanical',
+        category: 'fold2',
+        name: '보태니컬 올리브 리프',
+        tag: '#자연감성라인아트',
+        spec: 'fold2',
+        themeId: 'sage',
+        texture: 'tintoretto',
+        fontEn: 'var(--font-cormorant)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '은은한 보태니컬 올리브 엠보스와 따뜻한 자연의 색채',
+        frontPhotos: [
+          { id: 'p1', x: 205, y: 35, w: 140, h: 145, shape: 'arch', grayscale: true, url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          { id: 't1', x: 20, y: 90, text: 'The Wedding Ceremony', font: 'var(--font-cormorant)', size: 11, weight: '600', align: 'center', w: 145 },
+          { id: 't2', x: 195, y: 195, text: 'DONGHYEON & EUNJI', font: 'var(--font-cormorant)', size: 12, weight: '600', align: 'center', letterSpacing: '0.12em', w: 160 },
+          { id: 't3', x: 195, y: 220, text: '2027. 02. 21', font: 'var(--font-bodoni)', size: 10, weight: '400', align: 'center', w: 160 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb1', x: 20, y: 50, text: '함께 맞는 봄날의 약속', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 145 },
+          { id: 'tb2', x: 195, y: 50, text: '오셔서 따뜻한 박수로\n축복해 주시면 감사하겠습니다.', font: 'var(--font-notoserif)', size: 9.5, weight: '400', align: 'center', w: 160 }
+        ]
+      },
+      fold_romantic: {
+        id: 'fold_romantic',
+        category: 'fold2',
+        name: '로맨틱 폴라로이드 폴드',
+        tag: '#스냅사진콜라주',
+        spec: 'fold2',
+        themeId: 'rose',
+        texture: 'linen',
+        fontEn: 'var(--font-playfair)',
+        fontKr: 'var(--font-notoserif)',
+        desc: '폴라로이드 스냅 사진 감성과 은은한 로즈 톤의 조화',
+        frontPhotos: [
+          { id: 'p1', x: 200, y: 30, w: 150, h: 160, shape: 'polaroid', grayscale: false, url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          { id: 't1', x: 20, y: 80, text: 'A Beautiful Beginning', font: 'var(--font-playfair)', size: 12, weight: '600', align: 'center', w: 145 },
+          { id: 't2', x: 195, y: 210, text: 'Our Wedding Day', font: 'var(--font-playfair)', size: 11, weight: '600', align: 'center', w: 160 },
+          { id: 't3', x: 195, y: 235, text: '2027년 2월 21일', font: 'var(--font-notoserif)', size: 9.5, weight: '500', align: 'center', w: 160 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb1', x: 25, y: 40, text: '소중한 분들께 드리는 글', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 140 },
+          { id: 'tb2', x: 195, y: 40, text: '김동현 & 하은지 결혼식', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 160 }
+        ]
+      },
+
+      // --- 티켓형 3종 ---
+      ticket_boardingpass: {
+        id: 'ticket_boardingpass',
+        category: 'ticket',
+        name: '웨딩 에어라인 보딩패스',
+        tag: '#비행기탑승권',
+        spec: 'ticket',
+        themeId: 'linen',
+        texture: 'tintoretto',
+        fontEn: 'var(--font-bodoni)',
+        fontKr: 'var(--font-sans)',
+        desc: '출발지(솔로)에서 도착지(결혼)로 향하는 위트 넘치는 항공권 디자인',
+        frontPhotos: [
+          { id: 'p1', x: 25, y: 45, w: 200, h: 140, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          { id: 't_head', x: 20, y: 20, text: 'BOARDING PASS  ✈  WEDDING AIR', font: 'var(--font-bodoni)', size: 9, weight: '700', align: 'center', letterSpacing: '0.12em', w: 210 },
+          { id: 't_pass', x: 25, y: 200, text: 'PASSENGER: DONGHYEON & EUNJI', font: 'var(--font-sans)', size: 9.5, weight: '700', align: 'left', w: 200 },
+          { id: 't_route', x: 25, y: 225, text: 'FROM: SINGLE  ➔  TO: MARRIED', font: 'var(--font-bodoni)', size: 10, weight: '700', align: 'left', color: 'var(--gold)', w: 200 },
+          { id: 't_flight', x: 25, y: 250, text: 'FLIGHT: DH0221   GATE: 05F LAPORTE', font: 'var(--font-sans)', size: 9, weight: '600', align: 'left', w: 200 },
+          { id: 't_date', x: 25, y: 275, text: 'DATE: 2027. 02. 21 (SUN) 11:00 AM', font: 'var(--font-sans)', size: 9, weight: '600', align: 'left', w: 200 },
+          { id: 't_venue', x: 25, y: 300, text: 'VENUE: 대전 라포르테웨딩홀 5층', font: 'var(--font-sans)', size: 8.5, weight: '400', align: 'left', w: 200 },
+          // Stub 섹션 (절취선 하단)
+          { id: 't_stub_title', x: 25, y: 405, text: 'BOARDING PASS (STUB)', font: 'var(--font-bodoni)', size: 9, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
+          { id: 't_stub_info', x: 25, y: 425, text: '김동현 & 하은지 결혼식 입장권', font: 'var(--font-sans)', size: 8.5, weight: '600', align: 'center', w: 200 },
+          { id: 't_barcode', x: 25, y: 450, text: '||| | | |||| ||| |||| | ||||| | ||', font: 'var(--font-bodoni)', size: 16, weight: '400', align: 'center', letterSpacing: '0.18em', w: 200 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb_rules', x: 25, y: 50, text: 'FLIGHT NOTICE (탑승 유의사항)', font: 'var(--font-bodoni)', size: 10, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
+          { id: 'tb_msg', x: 25, y: 90, text: '본 탑승권은 두 사람의 새로운 여정을 축하하는 소중한 초대장입니다.\n지연 없는 정시 탑승을 권장합니다 :)', font: 'var(--font-sans)', size: 8.5, weight: '400', align: 'center', w: 200 }
+        ]
+      },
+      ticket_cinema: {
+        id: 'ticket_cinema',
+        category: 'ticket',
+        name: '빈티지 시네마 티켓',
+        tag: '#영화관스텁',
+        spec: 'ticket',
+        themeId: 'mocha',
+        texture: 'kraft',
+        fontEn: 'var(--font-cormorant)',
+        fontKr: 'var(--font-songmyung)',
+        desc: '1950년대 빈티지 극장 티켓 감성의 클래식한 타이포그래피',
+        frontPhotos: [
+          { id: 'p1', x: 30, y: 50, w: 190, h: 150, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          { id: 't_admit', x: 20, y: 22, text: '★ ADMIT TWO ★', font: 'var(--font-cormorant)', size: 11, weight: '700', align: 'center', letterSpacing: '0.2em', w: 210 },
+          { id: 't_movie', x: 25, y: 215, text: 'TITLE: A BEAUTIFUL LIFE', font: 'var(--font-cormorant)', size: 10.5, weight: '700', align: 'left', w: 200 },
+          { id: 't_starring', x: 25, y: 240, text: 'STARRING: DONGHYEON & EUNJI', font: 'var(--font-cormorant)', size: 9.5, weight: '600', align: 'left', w: 200 },
+          { id: 't_showtime', x: 25, y: 265, text: 'SHOWTIME: 2027. 02. 21  11:00 AM', font: 'var(--font-cormorant)', size: 9, weight: '600', align: 'left', w: 200 },
+          { id: 't_cinemahall', x: 25, y: 290, text: 'CINEMA: LAPORTE WEDDING HALL 5F', font: 'var(--font-cormorant)', size: 8.5, weight: '400', align: 'left', w: 200 },
+          // Stub
+          { id: 't_stub_no', x: 25, y: 410, text: 'TICKET NO. 2027-0221-LOVE', font: 'var(--font-cormorant)', size: 9, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
+          { id: 't_stub_adm', x: 25, y: 435, text: 'ADMIT TWO ONLY', font: 'var(--font-cormorant)', size: 9, weight: '600', align: 'center', w: 200 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb_synopsis', x: 25, y: 50, text: 'SYNOPSIS', font: 'var(--font-cormorant)', size: 11, weight: '700', align: 'center', letterSpacing: '0.2em', w: 200 },
+          { id: 'tb_body', x: 25, y: 85, text: '인생이라는 긴 영화에서\n가장 아름다운 장면을 함께 만들어갈\n두 사람의 첫 상영회에 초대합니다.', font: 'var(--font-songmyung)', size: 9.5, weight: '400', align: 'center', w: 200 }
+        ]
+      },
+      ticket_festival: {
+        id: 'ticket_festival',
+        category: 'ticket',
+        name: '모던 페스티벌 VIP 패스',
+        tag: '#볼드타이포',
+        spec: 'ticket',
+        themeId: 'black',
+        texture: 'extra',
+        fontEn: 'var(--font-montserrat)',
+        fontKr: 'var(--font-sans)',
+        desc: '모던하고 감각적인 축제 입장권 느낌의 볼드 타이포그래피',
+        frontPhotos: [
+          { id: 'p1', x: 30, y: 50, w: 190, h: 140, shape: 'round', grayscale: false, url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80' }
+        ],
+        frontTexts: [
+          { id: 't_vip', x: 20, y: 22, text: 'VIP INVITATION PASS', font: 'var(--font-montserrat)', size: 10, weight: '700', align: 'center', letterSpacing: '0.15em', w: 210 },
+          { id: 't_fest', x: 25, y: 210, text: 'DONGHYEON & EUNJI', font: 'var(--font-montserrat)', size: 12, weight: '700', align: 'center', letterSpacing: '0.08em', w: 200 },
+          { id: 't_date', x: 25, y: 240, text: '2027.02.21 SUN 11:00 AM', font: 'var(--font-montserrat)', size: 9.5, weight: '600', align: 'center', color: 'var(--gold)', w: 200 },
+          { id: 't_loc', x: 25, y: 270, text: 'LAPORTE HALL 5F, DAEJEON', font: 'var(--font-montserrat)', size: 8.5, weight: '400', align: 'center', w: 200 },
+          // Stub
+          { id: 't_stub_qr', x: 25, y: 410, text: '[ QR CODE VERIFIED ]', font: 'var(--font-montserrat)', size: 9, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
+          { id: 't_stub_num', x: 25, y: 435, text: '#VIP-20270221', font: 'var(--font-montserrat)', size: 9, weight: '600', align: 'center', w: 200 }
+        ],
+        backPhotos: [],
+        backTexts: [
+          { id: 'tb_msg', x: 25, y: 60, text: 'LET'S CELEBRATE TOGETHER', font: 'var(--font-montserrat)', size: 10, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
+          { id: 'tb_info', x: 25, y: 100, text: '신랑 김동현 & 신부 하은지\n함께 걸어갈 축제의 날을 함께해주세요.', font: 'var(--font-sans)', size: 9, weight: '400', align: 'center', w: 200 }
+        ]
+      }
+    };
+
+    // ================= GLOBAL APPLICATION STATE =================
+    let state = {
+      templateId: 'postcard_editorial',
+      spec: 'postcard', // postcard, fold2, ticket
+      side: 'front',     // front, back
       themeId: 'linen',
-      texture: 'tintoretto', // tintoretto, extra, linen, kraft, pearl
-      frame: 'lace',      // lace, goldline, arch, none
+      texture: 'tintoretto', // tintoretto, linen, extra, kraft, pearl
+      lighting: true,
       fontEn: 'var(--font-bodoni)',
       fontKr: 'var(--font-notoserif)',
       groom: '김동현',
@@ -868,18 +1303,106 @@
       date: '2027년 2월 21일 일요일, 오전 11시',
       venue: '라포르테웨딩홀 5층 라포르테홀',
       letter: '서로를 배려하고 아끼며 평생을 함께 걸어가고자 합니다.\n새로운 시작을 따뜻한 축복으로 밝혀주세요.',
-      photoUrl: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80',
-      grayscale: true,
-      customBoxes: [] // { id, text, x, y, font, size }
+      
+      // Dynamic Elements on Canvas
+      photos: [],
+      texts: [],
+      selectedElId: null,
+      selectedType: null // 'photo' or 'text'
     };
 
-    // Render Color Palettes in Accordion
+    // ================= INITIALIZATION & SETUP =================
+    function initStudio() {
+      renderTemplateCards('postcard');
+      initColorPalettes();
+      applyTemplate('postcard_editorial');
+    }
+
+    // Switch Template Category Tabs (엽서형 / 2단접지 / 티켓형)
+    function switchTemplateCategory(cat) {
+      document.querySelectorAll('.template-tab-btn').forEach(b => b.classList.remove('active'));
+      if (cat === 'postcard') document.getElementById('tabSpecPostcard').classList.add('active');
+      if (cat === 'fold2') document.getElementById('tabSpecFold2').classList.add('active');
+      if (cat === 'ticket') document.getElementById('tabSpecTicket').classList.add('active');
+      renderTemplateCards(cat);
+    }
+
+    // Render 3 Template Cards for Selected Category
+    function renderTemplateCards(cat) {
+      const container = document.getElementById('templateCardContainer');
+      const templates = Object.values(BASE_TEMPLATES).filter(t => t.category === cat);
+      container.innerHTML = templates.map(t => `
+        <div class="template-card ${t.id === state.templateId ? 'active' : ''}" onclick="applyTemplate('${t.id}')">
+          <div class="template-preview-box">
+            <span style="font-size: 16px; margin-bottom: 2px;">${cat === 'postcard' ? '✉️' : cat === 'fold2' ? '📖' : '🎟️'}</span>
+            <span class="template-tag">${t.tag}</span>
+          </div>
+          <span class="template-name">${t.name}</span>
+        </div>
+      `).join('');
+    }
+
+    // Apply Chosen Base Template
+    function applyTemplate(tplId) {
+      const tpl = BASE_TEMPLATES[tplId];
+      if (!tpl) return;
+
+      state.templateId = tplId;
+      state.spec = tpl.spec;
+      state.themeId = tpl.themeId;
+      state.texture = tpl.texture;
+      state.fontEn = tpl.fontEn;
+      state.fontKr = tpl.fontKr;
+
+      // Deep copy elements from template
+      state.photos = JSON.parse(JSON.stringify(tpl.frontPhotos || []));
+      state.texts = JSON.parse(JSON.stringify(tpl.frontTexts || []));
+      state.backPhotos = JSON.parse(JSON.stringify(tpl.backPhotos || []));
+      state.backTexts = JSON.parse(JSON.stringify(tpl.backTexts || []));
+
+      // Update Spec UI
+      document.querySelectorAll('#accBody-3 .card-choice').forEach(c => c.classList.remove('active'));
+      if (tpl.spec === 'postcard') document.getElementById('specPostcard').classList.add('active');
+      if (tpl.spec === 'fold2') document.getElementById('specFold2').classList.add('active');
+      if (tpl.spec === 'ticket') document.getElementById('specTicket').classList.add('active');
+
+      // Update Texture UI
+      setTexture(tpl.texture);
+
+      // Update Theme UI
+      applyTheme(tpl.themeId, null);
+
+      // Update Fonts UI
+      document.getElementById('selFontEn').value = tpl.fontEn;
+      document.getElementById('selFontKr').value = tpl.fontKr;
+
+      // Update Template Card active state
+      document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
+      const activeCard = Array.from(document.querySelectorAll('.template-card')).find(c => c.innerHTML.includes(tpl.name));
+      if (activeCard) activeCard.classList.add('active');
+
+      state.side = 'front';
+      document.getElementById('btnSideA').classList.add('active');
+      document.getElementById('btnSideB').classList.remove('active');
+
+      updateMockupDimensions();
+      renderCanvas();
+      updateSidebarPhotoList();
+    }
+
+    function resetToTemplateDefault() {
+      if (confirm('현재 도안을 선택하신 템플릿의 초기 상태로 되돌리시겠습니까?')) {
+        applyTemplate(state.templateId);
+      }
+    }
+
+    // Render Color Palettes
     function initColorPalettes() {
       const grid = document.getElementById('colorPaletteGrid');
       grid.innerHTML = COLOR_THEMES.map(th => `
         <div class="swatch-card ${th.id === state.themeId ? 'active' : ''}" onclick="applyTheme('${th.id}', this)">
           <div class="swatch-preview" style="background: ${th.bg};">
-            <span style="position: absolute; right: 0; bottom: 0; width: 10px; height: 10px; background: ${th.accent}; border-radius: 50% 0 0 0;"></span>
+            <span style="position: absolute; right: 0; bottom: 0; width: 8px; height: 8px; background: ${th.accent}; border-radius: 50% 0 0 0;"></span>
           </div>
           <span class="swatch-name">${th.name}</span>
         </div>
@@ -895,99 +1418,128 @@
         document.documentElement.style.setProperty('--paper-bg', th.bg);
         document.documentElement.style.setProperty('--paper-text', th.text);
         document.documentElement.style.setProperty('--paper-accent', th.accent);
-        document.documentElement.style.setProperty('--paper-muted', th.muted);
-        document.documentElement.style.setProperty('--paper-border', th.border);
-        document.documentElement.style.setProperty('--paper-card-bg', th.cardBg);
       }
       renderCanvas();
     }
 
-    // Mobile Tab Navigation
-    function switchMobileTab(tab) {
-      document.getElementById('panelStudio').classList.add('hidden');
-      document.getElementById('panelSettings').classList.add('hidden');
-      document.getElementById('panelSpecs').classList.add('hidden');
-
-      document.getElementById('tabBtnStudio').classList.remove('active');
-      document.getElementById('tabBtnSettings').classList.remove('active');
-      document.getElementById('tabBtnSpecs').classList.remove('active');
-
-      if (tab === 'studio') {
-        document.getElementById('panelStudio').classList.remove('hidden');
-        document.getElementById('tabBtnStudio').classList.add('active');
-      } else if (tab === 'settings') {
-        document.getElementById('panelSettings').classList.remove('hidden');
-        document.getElementById('tabBtnSettings').classList.add('active');
-      } else if (tab === 'specs') {
-        document.getElementById('panelSpecs').classList.remove('hidden');
-        document.getElementById('tabBtnSpecs').classList.add('active');
+    // Accordion Toggle
+    function toggleAcc(step) {
+      const body = document.getElementById(`accBody-${step}`);
+      const chv = document.getElementById(`accChv-${step}`);
+      const isCollapsed = body.classList.contains('collapsed');
+      
+      // Close others
+      for (let i = 1; i <= 6; i++) {
+        const b = document.getElementById(`accBody-${i}`);
+        const c = document.getElementById(`accChv-${i}`);
+        if (b) b.classList.add('collapsed');
+        if (c) c.textContent = '▾';
       }
-    }
 
-    function toggleAcc(id) {
-      const body = document.getElementById(`accBody-${id}`);
-      const chv = document.getElementById(`accChv-${id}`);
-      if (body.classList.contains('collapsed')) {
+      if (isCollapsed) {
         body.classList.remove('collapsed');
-        chv.style.transform = 'rotate(0deg)';
-      } else {
-        body.classList.add('collapsed');
-        chv.style.transform = 'rotate(-90deg)';
+        if (chv) chv.textContent = '▴';
       }
     }
 
-    function setSide(side) {
-      state.side = side;
-      document.getElementById('btnSideF').style.background = side === 'front' ? 'white' : 'transparent';
-      document.getElementById('btnSideB').style.background = side === 'back' ? 'white' : 'transparent';
-      renderCanvas();
+    // Mobile Tabs Switching
+    function switchMobileTab(tab) {
+      document.querySelectorAll('.mobile-nav-btn').forEach(b => b.classList.remove('active'));
+      const sidebar = document.getElementById('sidebarPanel');
+      const canvas = document.getElementById('canvasViewport');
+
+      if (tab === 'templates') {
+        document.getElementById('mTabTemplates').classList.add('active');
+        sidebar.style.display = 'flex';
+        toggleAcc(1);
+      } else if (tab === 'canvas') {
+        document.getElementById('mTabCanvas').classList.add('active');
+        if (window.innerWidth <= 768) sidebar.style.display = 'none';
+      } else if (tab === 'settings') {
+        document.getElementById('mTabSettings').classList.add('active');
+        sidebar.style.display = 'flex';
+        toggleAcc(3);
+      }
     }
 
-    function setSpec(spec, el) {
-      document.querySelectorAll('#accBody-2 .card-choice').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
+    // Spec Change
+    function setSpec(spec) {
       state.spec = spec;
-
-      const paper = document.getElementById('mockupPaper');
-      const fold = document.getElementById('guideFoldLine');
-      paper.className = paper.className.replace(/mockup-\w+/g, '').trim();
-      paper.classList.add(`mockup-${spec}`);
-
-      if (spec === 'postcard') {
-        fold.classList.add('hidden');
-        document.getElementById('specFinish').textContent = '100 × 150 mm';
-        document.getElementById('specBleed').textContent = '106 × 156 mm';
-      } else if (spec === 'fold2') {
-        fold.classList.remove('hidden');
-        document.getElementById('specFinish').textContent = '200 × 150 mm';
-        document.getElementById('specBleed').textContent = '206 × 156 mm';
-      } else if (spec === 'ticket') {
-        fold.classList.add('hidden');
-        document.getElementById('specFinish').textContent = '75 × 150 mm';
-        document.getElementById('specBleed').textContent = '81 × 156 mm';
-      }
+      document.querySelectorAll('#accBody-3 .card-choice').forEach(c => c.classList.remove('active'));
+      if (spec === 'postcard') document.getElementById('specPostcard').classList.add('active');
+      if (spec === 'fold2') document.getElementById('specFold2').classList.add('active');
+      if (spec === 'ticket') document.getElementById('specTicket').classList.add('active');
+      updateMockupDimensions();
       renderCanvas();
     }
 
-    function setTexture(tex, el) {
-      el.parentElement.querySelectorAll('.card-choice').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
+    function updateMockupDimensions() {
+      const paper = document.getElementById('mockupPaper');
+      const crease = document.getElementById('crease3D');
+      const tStub = document.getElementById('ticketStubLine');
+      const tNotchL = document.getElementById('ticketNotchL');
+      const tNotchR = document.getElementById('ticketNotchR');
+
+      paper.className = paper.className.replace(/mockup-\w+/g, '').trim();
+
+      if (state.spec === 'postcard') {
+        paper.classList.add('mockup-postcard');
+        crease.classList.add('hidden');
+        tStub.classList.add('hidden');
+        tNotchL.classList.add('hidden');
+        tNotchR.classList.add('hidden');
+      } else if (state.spec === 'fold2') {
+        paper.classList.add('mockup-fold2');
+        crease.classList.remove('hidden');
+        tStub.classList.add('hidden');
+        tNotchL.classList.add('hidden');
+        tNotchR.classList.add('hidden');
+      } else if (state.spec === 'ticket') {
+        paper.classList.add('mockup-ticket');
+        crease.classList.add('hidden');
+        tStub.classList.remove('hidden');
+        tNotchL.classList.remove('hidden');
+        tNotchR.classList.remove('hidden');
+      }
+    }
+
+    // Texture Simulation Change
+    function setTexture(tex) {
       state.texture = tex;
       const paper = document.getElementById('mockupPaper');
       paper.className = paper.className.replace(/tex-\w+/g, '').trim();
       paper.classList.add(`tex-${tex}`);
+
+      document.querySelectorAll('#accBody-3 .card-choice').forEach(c => {
+        if (c.id && c.id.startsWith('tex')) c.classList.remove('active');
+      });
+      const idMap = { tintoretto: 'texTintoretto', linen: 'texLinen', extra: 'texExtra', kraft: 'texKraft', pearl: 'texPearl' };
+      if (idMap[tex] && document.getElementById(idMap[tex])) {
+        document.getElementById(idMap[tex]).classList.add('active');
+      }
     }
 
-    function setFrame(frame, el) {
-      document.querySelectorAll('#accBody-5 .card-choice').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-      state.frame = frame;
+    function toggleLighting(enabled) {
+      state.lighting = enabled;
+      const l = document.getElementById('paperLighting');
+      if (enabled) l.classList.remove('hidden');
+      else l.classList.add('hidden');
+    }
+
+    // Side Toggle (Front / Back)
+    function setSide(side) {
+      state.side = side;
+      document.getElementById('btnSideA').classList.toggle('active', side === 'front');
+      document.getElementById('btnSideB').classList.toggle('active', side === 'back');
       renderCanvas();
+      updateSidebarPhotoList();
     }
 
+    // Fonts Change
     function changeFontEn(font) { state.fontEn = font; renderCanvas(); }
     function changeFontKr(font) { state.fontKr = font; renderCanvas(); }
 
+    // Live Text Sync from Sidebar Inputs
     function syncText() {
       state.groom = document.getElementById('inpGroom').value;
       state.bride = document.getElementById('inpBride').value;
@@ -997,307 +1549,369 @@
       renderCanvas();
     }
 
+    // ================= PHOTO ADDITION & MANAGEMENT ENGINE =================
+    function triggerPhotoUpload() {
+      document.getElementById('photoModal').classList.remove('hidden');
+    }
+    function closePhotoModal() {
+      document.getElementById('photoModal').classList.add('hidden');
+    }
+
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        addPhotoToCanvas(e.target.result);
+        closePhotoModal();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function selectSamplePhoto(url) {
+      addPhotoToCanvas(url);
+      closePhotoModal();
+    }
+
+    function addPhotoToCanvas(url) {
+      const newPhoto = {
+        id: 'photo_' + Date.now(),
+        x: state.spec === 'fold2' ? 200 : 45,
+        y: 60,
+        w: state.spec === 'ticket' ? 190 : 240,
+        h: state.spec === 'fold2' ? 150 : 220,
+        shape: 'rect',
+        grayscale: false,
+        url: url
+      };
+
+      if (state.side === 'front') {
+        state.photos.push(newPhoto);
+      } else {
+        if (!state.backPhotos) state.backPhotos = [];
+        state.backPhotos.push(newPhoto);
+      }
+
+      renderCanvas();
+      updateSidebarPhotoList();
+      selectElement(newPhoto.id, 'photo');
+    }
+
+    function updateSidebarPhotoList() {
+      const list = document.getElementById('sidebarPhotoList');
+      const activeList = state.side === 'front' ? state.photos : (state.backPhotos || []);
+      if (!activeList || activeList.length === 0) {
+        list.innerHTML = '<span style="font-size: 10px; color: var(--muted); font-style: italic;">현재 면에 추가된 사진이 없습니다.</span>';
+        return;
+      }
+
+      list.innerHTML = activeList.map((p, idx) => `
+        <div style="display: flex; align-items: center; justify-content: space-between; background: #FFF; padding: 6px 8px; border-radius: 4px; border: 1px solid var(--border);">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <img src="${p.url}" style="width: 28px; height: 28px; object-fit: cover; border-radius: 3px;">
+            <span style="font-size: 11px; font-weight: 500;">사진 #${idx + 1} (${p.shape})</span>
+          </div>
+          <div style="display: flex; gap: 4px;">
+            <button onclick="setPhotoShape('${p.id}', 'arch')" style="font-size: 9px; padding: 2px 4px; border: 1px solid var(--border-dark); background: #FFF; border-radius: 3px; cursor: pointer;">아치</button>
+            <button onclick="togglePhotoGrayscale('${p.id}')" style="font-size: 9px; padding: 2px 4px; border: 1px solid var(--border-dark); background: #FFF; border-radius: 3px; cursor: pointer;">흑백</button>
+            <button onclick="deletePhoto('${p.id}')" style="font-size: 9px; padding: 2px 4px; border: 1px solid #FFCCCC; background: #FFF; color: #E53E3E; border-radius: 3px; cursor: pointer;">삭제</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setPhotoShape(id, shape) {
+      const p = findPhoto(id);
+      if (p) {
+        p.shape = shape;
+        renderCanvas();
+        updateSidebarPhotoList();
+      }
+    }
+
+    function togglePhotoGrayscale(id) {
+      const p = findPhoto(id);
+      if (p) {
+        p.grayscale = !p.grayscale;
+        renderCanvas();
+        updateSidebarPhotoList();
+      }
+    }
+
+    function deletePhoto(id) {
+      if (state.side === 'front') {
+        state.photos = state.photos.filter(p => p.id !== id);
+      } else {
+        state.backPhotos = (state.backPhotos || []).filter(p => p.id !== id);
+      }
+      renderCanvas();
+      updateSidebarPhotoList();
+    }
+
+    function findPhoto(id) {
+      const list = state.side === 'front' ? state.photos : (state.backPhotos || []);
+      return list.find(p => p.id === id);
+    }
+
     // ================= CUSTOM TEXT BOX ENGINE =================
     function addCustomTextBox() {
       const newBox = {
         id: 'box_' + Date.now(),
         text: '여기에 문구를 입력하세요',
         x: 40,
-        y: 80,
+        y: 100,
         font: state.fontKr,
-        size: 11
+        size: 11,
+        weight: '400',
+        align: 'center',
+        w: 250
       };
-      state.customBoxes.push(newBox);
-      updateCustomBoxList();
-      renderCanvas();
-      selectElement(newBox.id);
-    }
 
-    function updateCustomBoxList() {
-      const container = document.getElementById('customTextBoxList');
-      if (state.customBoxes.length === 0) {
-        container.innerHTML = '<p style="font-size: 10px; color: var(--muted); text-align: center;">추가된 글상자가 없습니다.</p>';
-        return;
+      if (state.side === 'front') {
+        state.texts.push(newBox);
+      } else {
+        if (!state.backTexts) state.backTexts = [];
+        state.backTexts.push(newBox);
       }
-      container.innerHTML = state.customBoxes.map((b, idx) => `
-        <div style="border: 1px solid var(--border); padding: 6px 8px; border-radius: 6px; background: var(--surface);">
-          <div class="flex items-center justify-between" style="margin-bottom: 4px;">
-            <span style="font-size: 10px; font-weight: 700; color: var(--gold);">글상자 #${idx+1}</span>
-            <button onclick="deleteCustomBox('${b.id}')" style="background: none; border: none; color: #E53E3E; font-size: 10px; cursor: pointer;">삭제</button>
-          </div>
-          <input type="text" value="${b.text}" oninput="updateCustomBoxText('${b.id}', this.value)" class="input-text" style="font-size: 11px; padding: 4px 6px;">
-        </div>
-      `).join('');
-    }
 
-    function updateCustomBoxText(id, text) {
-      const box = state.customBoxes.find(b => b.id === id);
-      if (box) { box.text = text; renderCanvas(); }
-    }
-
-    function deleteCustomBox(id) {
-      state.customBoxes = state.customBoxes.filter(b => b.id !== id);
-      updateCustomBoxList();
       renderCanvas();
+      selectElement(newBox.id, 'text');
     }
 
-    function resetPositions() {
-      state.customBoxes.forEach((b, idx) => {
-        b.x = 40;
-        b.y = 80 + (idx * 30);
-      });
-      renderCanvas();
-    }
-
-    // Photo Upload
-    document.getElementById('inpPhoto').addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (ev) => { state.photoUrl = ev.target.result; renderCanvas(); };
-        reader.readAsDataURL(file);
+    function deleteText(id) {
+      if (state.side === 'front') {
+        state.texts = state.texts.filter(t => t.id !== id);
+      } else {
+        state.backTexts = (state.backTexts || []).filter(t => t.id !== id);
       }
-    });
+      renderCanvas();
+    }
 
-    document.getElementById('chkGray').addEventListener('change', (e) => {
-      state.grayscale = e.target.checked; renderCanvas();
-    });
-
-    document.getElementById('chkBleed').addEventListener('change', (e) => {
-      document.getElementById('guideBleedBox').style.display = e.target.checked ? 'block' : 'none';
-    });
-
-    // ================= ADAPTIVE LAYOUT RENDERER =================
+    // ================= DYNAMIC CANVAS RENDERER =================
     function renderCanvas() {
       const mount = document.getElementById('dynamicCanvasMount');
-      const isFront = state.side === 'front';
-      const grayStyle = state.grayscale ? 'filter: grayscale(100%);' : '';
-      const frameClass = `frame-${state.frame}`;
+      mount.innerHTML = '';
 
-      let html = '';
+      const currentPhotos = state.side === 'front' ? state.photos : (state.backPhotos || []);
+      const currentTexts = state.side === 'front' ? state.texts : (state.backTexts || []);
 
+      // 1. Render Photos
+      currentPhotos.forEach(p => {
+        const el = document.createElement('div');
+        el.className = `canvas-el frame-shape-${p.shape} ${state.selectedElId === p.id ? 'selected' : ''}`;
+        el.id = p.id;
+        el.style.left = `${p.x}px`;
+        el.style.top = `${p.y}px`;
+        el.style.width = `${p.w}px`;
+        el.style.height = `${p.h}px`;
+
+        let filterStyle = p.grayscale ? 'filter: grayscale(100%) contrast(108%);' : '';
+        el.innerHTML = `
+          <img src="${p.url}" style="width: 100%; height: 100%; object-fit: cover; display: block; ${filterStyle} pointer-events: none;">
+          ${state.selectedElId === p.id ? `
+            <div class="el-floating-bar">
+              <button class="el-floating-btn" onclick="cyclePhotoShape('${p.id}', event)">◩ 형태변경</button>
+              <button class="el-floating-btn" onclick="togglePhotoGrayscale('${p.id}'); event.stopPropagation();">◐ 흑백토글</button>
+              <button class="el-floating-btn danger" onclick="deletePhoto('${p.id}'); event.stopPropagation();">🗑️ 삭제</button>
+            </div>
+          ` : ''}
+        `;
+
+        el.addEventListener('pointerdown', (e) => startDrag(e, p, 'photo'));
+        mount.appendChild(el);
+      });
+
+      // 2. Render Text Blocks
+      currentTexts.forEach(t => {
+        const el = document.createElement('div');
+        el.className = `canvas-el ${state.selectedElId === t.id ? 'selected' : ''}`;
+        el.id = t.id;
+        el.style.left = `${t.x}px`;
+        el.style.top = `${t.y}px`;
+        if (t.w) el.style.width = `${t.w}px`;
+
+        el.style.fontFamily = t.font || state.fontKr;
+        el.style.fontSize = `${t.size}px`;
+        el.style.fontWeight = t.weight || '400';
+        el.style.textAlign = t.align || 'center';
+        if (t.letterSpacing) el.style.letterSpacing = t.letterSpacing;
+        if (t.fontStyle) el.style.fontStyle = t.fontStyle;
+        if (t.color) el.style.color = t.color;
+        el.style.lineHeight = '1.5';
+        el.style.whiteSpace = 'pre-wrap';
+
+        // Content interpolation for live sync
+        let renderedText = t.text;
+        renderedText = renderedText.replace(/김동현/g, state.groom);
+        renderedText = renderedText.replace(/하은지/g, state.bride);
+
+        el.innerHTML = `
+          <div contenteditable="true" onblur="handleInlineEdit('${t.id}', this.innerText)" style="outline: none;">${renderedText}</div>
+          ${state.selectedElId === t.id ? `
+            <div class="el-floating-bar">
+              <button class="el-floating-btn" onclick="resizeText('${t.id}', 1, event)">A+</button>
+              <button class="el-floating-btn" onclick="resizeText('${t.id}', -1, event)">A-</button>
+              <button class="el-floating-btn danger" onclick="deleteText('${t.id}'); event.stopPropagation();">🗑️</button>
+            </div>
+          ` : ''}
+        `;
+
+        el.addEventListener('pointerdown', (e) => startDrag(e, t, 'text'));
+        mount.appendChild(el);
+      });
+    }
+
+    function handleInlineEdit(id, text) {
+      const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+      const t = list.find(item => item.id === id);
+      if (t) t.text = text;
+    }
+
+    function resizeText(id, delta, e) {
+      if (e) e.stopPropagation();
+      const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+      const t = list.find(item => item.id === id);
+      if (t) {
+        t.size = Math.max(8, (t.size || 11) + delta);
+        renderCanvas();
+      }
+    }
+
+    function cyclePhotoShape(id, e) {
+      if (e) e.stopPropagation();
+      const p = findPhoto(id);
+      if (!p) return;
+      const shapes = ['rect', 'round', 'arch', 'lace', 'polaroid'];
+      const nextIdx = (shapes.indexOf(p.shape) + 1) % shapes.length;
+      p.shape = shapes[nextIdx];
+      renderCanvas();
+      updateSidebarPhotoList();
+    }
+
+    // ================= TOUCH & MOUSE DRAGGING ENGINE =================
+    let dragObj = null;
+    let dragStartX = 0, dragStartY = 0;
+    let initialObjX = 0, initialObjY = 0;
+
+    function startDrag(e, obj, type) {
+      // Don't drag if clicking floating toolbar buttons or editing text
+      if (e.target.closest('.el-floating-bar') || e.target.getAttribute('contenteditable') === 'true') {
+        selectElement(obj.id, type);
+        return;
+      }
+
+      dragObj = obj;
+      dragStartX = e.clientX || (e.touches && e.touches[0].clientX);
+      dragStartY = e.clientY || (e.touches && e.touches[0].clientY);
+      initialObjX = obj.x;
+      initialObjY = obj.y;
+
+      selectElement(obj.id, type);
+
+      window.addEventListener('pointermove', onDragging);
+      window.addEventListener('pointerup', endDragging);
+    }
+
+    function onDragging(e) {
+      if (!dragObj) return;
+      const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+      const clientY = e.clientY || (e.touches && e.touches[0].clientY);
+      const dx = clientX - dragStartX;
+      const dy = clientY - dragStartY;
+
+      dragObj.x = Math.round(initialObjX + dx);
+      dragObj.y = Math.round(initialObjY + dy);
+
+      const el = document.getElementById(dragObj.id);
+      if (el) {
+        el.style.left = `${dragObj.x}px`;
+        el.style.top = `${dragObj.y}px`;
+      }
+    }
+
+    function endDragging() {
+      dragObj = null;
+      window.removeEventListener('pointermove', onDragging);
+      window.removeEventListener('pointerup', endDragging);
+    }
+
+    function selectElement(id, type) {
+      state.selectedElId = id;
+      state.selectedType = type;
+      document.querySelectorAll('.canvas-el').forEach(el => el.classList.remove('selected'));
+      const activeEl = document.getElementById(id);
+      if (activeEl) activeEl.classList.add('selected');
+    }
+
+    function handleCanvasBgClick(e) {
+      if (e.target.id === 'dynamicCanvasMount') {
+        state.selectedElId = null;
+        state.selectedType = null;
+        document.querySelectorAll('.canvas-el').forEach(el => el.classList.remove('selected'));
+        renderCanvas();
+      }
+    }
+
+    // ================= 300DPI PRINT SPEC MODAL =================
+    function openExportModal() {
+      const modal = document.getElementById('exportModal');
+      const specBox = document.getElementById('exportSpecDetails');
+
+      let specInfo = '';
       if (state.spec === 'postcard') {
-        if (isFront) {
-          html = `
-            <div id="elem-date" class="drag-element text-center" style="top: 18px; left: 0; right: 0; font-family: ${state.fontEn}; font-size: 10px; letter-spacing: 0.28em; color: var(--paper-muted); text-transform: uppercase;">
-              2027.02.21 SUN
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-tr"></div>
-            </div>
-
-            <div id="elem-photo" class="drag-element flex items-center justify-center" style="top: 50px; left: 0; right: 0;">
-              <div class="frame-wrapper ${frameClass}" style="width: 190px; height: 245px;">
-                <div class="photo-clip">
-                  <img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}">
-                </div>
-              </div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-
-            <div id="elem-bottom" class="drag-element flex items-end justify-between" style="bottom: 18px; left: 16px; right: 16px; border-top: 1px solid var(--paper-border); padding-top: 8px;">
-              <div style="font-family: ${state.fontEn}; font-size: 20px; line-height: 1; letter-spacing: 0.05em; font-weight: 600; color: var(--paper-text);">
-                WEDDING<br>DAY
-              </div>
-              <div class="text-right" style="font-family: ${state.fontKr};">
-                <div style="font-size: 13px; font-weight: 600; color: var(--paper-text);">${state.groom} & ${state.bride}</div>
-                <div style="font-size: 9.5px; color: var(--paper-muted); margin-top: 2px; line-height: 1.3;">
-                  ${state.date}<br>${state.venue}
-                </div>
-              </div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-tr"></div>
-            </div>
-          `;
-        } else {
-          html = `
-            <div id="elem-letter" class="drag-element text-center" style="top: 20px; left: 16px; right: 16px; font-family: ${state.fontKr};">
-              <div style="font-family: ${state.fontEn}; font-size: 13px; letter-spacing: 0.2em; color: var(--paper-accent); margin-bottom: 8px;">INVITATION</div>
-              <p style="font-size: 11px; line-height: 1.8; color: var(--paper-text); white-space: pre-wrap;">${state.letter}</p>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-
-            <div id="elem-calendar" class="drag-element" style="bottom: 110px; left: 24px; right: 24px; background: var(--paper-card-bg); padding: 8px; border-radius: 4px; border: 1px solid var(--paper-border);">
-              <div class="text-center" style="font-family: ${state.fontEn}; font-size: 9px; letter-spacing: 0.15em; color: var(--paper-accent); margin-bottom: 4px;">FEBRUARY 2027</div>
-              <div style="display: grid; grid-template-columns: repeat(7, 1fr); font-size: 8px; color: #999; font-family: var(--font-sans); gap: 2px; text-align: center;">
-                <span>일</span><span>월</span><span>화</span><span>수</span><span>목</span><span>금</span><span>토</span>
-                <span>14</span><span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span>
-                <span style="background: var(--paper-accent); color: white; border-radius: 50%; font-weight: 700;">21</span>
-                <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span>27</span><span>28</span>
-              </div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-
-            <div id="elem-venue" class="drag-element text-left" style="bottom: 18px; left: 16px; right: 16px; background: var(--paper-card-bg); padding: 8px 10px; border-radius: 4px; border: 1px solid var(--paper-border); font-size: 9.5px; font-family: var(--font-sans);">
-              <div style="font-weight: 700; margin-bottom: 2px; color: var(--paper-text);">${state.venue}</div>
-              <p style="color: var(--paper-text);">🚇 지하철 1호선 탄방역 5번 출구 (도보 5분)</p>
-              <p style="color: var(--paper-text);">🚗 지하 1~3층 전용 주차장 (2시간 무료)</p>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-          `;
-        }
+        specInfo = `
+          <strong>[엽서형 규격]</strong><br>
+          - 실 작업 사이즈: 106 × 156 mm (재단 3mm 포함)<br>
+          - 최종 재단 사이즈: 100 × 150 mm<br>
+          - 권장 해상도: 300 DPI (1252 × 1843 px)<br>
+          - 추천 인쇄소: 성원애드피아 / 오프린트미 엽서 카테고리
+        `;
       } else if (state.spec === 'fold2') {
-        if (isFront) {
-          html = `
-            <div id="elem-fold-left" class="drag-element text-center p-2" style="top: 20px; left: 12px; width: 155px; border-right: 1px dashed var(--paper-border); font-family: ${state.fontKr};">
-              <div style="font-family: ${state.fontEn}; font-size: 11px; letter-spacing: 0.25em; color: var(--paper-accent); margin-bottom: 8px;">THANK YOU</div>
-              <div style="font-size: 9.5px; line-height: 1.6; color: var(--paper-muted);">따뜻한 축복과 격려에 감사드리며<br>예쁘게 잘 살겠습니다.</div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-
-            <div id="elem-fold-right" class="drag-element" style="top: 10px; right: 12px; width: 160px; text-align: center;">
-              <div style="font-family: ${state.fontEn}; font-size: 8px; letter-spacing: 0.2em; color: var(--paper-muted);">2027.02.21 SUN</div>
-              <div class="frame-wrapper ${frameClass}" style="width: 110px; height: 135px; margin: 4px auto;">
-                <div class="photo-clip"><img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}"></div>
-              </div>
-              <div style="font-family: ${state.fontEn}; font-size: 13px; font-weight: 600;">WEDDING DAY</div>
-              <div style="font-family: ${state.fontKr}; font-size: 10px; font-weight: 600;">${state.groom} & ${state.bride}</div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-          `;
-        } else {
-          html = `
-            <div id="elem-fold-inner-l" class="drag-element text-center" style="top: 15px; left: 10px; width: 160px; font-family: ${state.fontKr};">
-              <div style="font-family: ${state.fontEn}; font-size: 11px; letter-spacing: 0.2em; color: var(--paper-accent); margin-bottom: 4px;">INVITATION</div>
-              <p style="font-size: 9px; line-height: 1.6; white-space: pre-wrap;">${state.letter}</p>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-
-            <div id="elem-fold-inner-r" class="drag-element text-left" style="top: 15px; right: 10px; width: 160px; font-family: var(--font-sans); font-size: 9px;">
-              <div style="font-weight: 700; color: var(--paper-accent);">${state.date}</div>
-              <div style="font-weight: 700; margin-bottom: 4px;">${state.venue}</div>
-              <div style="background: var(--paper-card-bg); padding: 6px; border-radius: 4px; border: 1px solid var(--paper-border); line-height: 1.5;">
-                <p>🚇 지하철 1호선 탄방역 5분</p>
-                <p>🚗 2시간 무료 주차 지원</p>
-              </div>
-              <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-            </div>
-          `;
-        }
+        specInfo = `
+          <strong>[2단 가로접지 규격]</strong><br>
+          - 실 작업 사이즈: 206 × 156 mm (재단 3mm 포함)<br>
+          - 최종 재단 사이즈: 200 × 150 mm (중앙 1줄 오시선)<br>
+          - 권장 해상도: 300 DPI (2433 × 1843 px)<br>
+          - 추천 인쇄소: 성원애드피아 접지 리플렛 독판 카테고리
+        `;
       } else if (state.spec === 'ticket') {
-        html = `
-          <div id="elem-ticket-hdr" class="drag-element text-center" style="top: 14px; left: 10px; right: 10px; border-bottom: 1.5px dashed var(--paper-border); padding-bottom: 6px;">
-            <div style="font-family: ${state.fontEn}; font-size: 11px; letter-spacing: 0.25em; color: var(--paper-accent); font-weight: 700;">BOARDING PASS</div>
-            <div style="font-size: 8px; color: var(--paper-muted);">ADMIT TWO · NO. 20270221</div>
-            <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-          </div>
-
-          <div id="elem-ticket-photo" class="drag-element flex items-center justify-center" style="top: 55px; left: 0; right: 0;">
-            <div class="frame-wrapper ${frameClass}" style="width: 140px; height: 170px;">
-              <div class="photo-clip"><img src="${state.photoUrl}" alt="Wedding" style="${grayStyle}"></div>
-            </div>
-            <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-          </div>
-
-          <div id="elem-ticket-info" class="drag-element text-center" style="bottom: 16px; left: 10px; right: 10px; font-family: ${state.fontKr};">
-            <div style="font-size: 13px; font-weight: 700;">${state.groom} & ${state.bride}</div>
-            <div style="font-size: 9px; color: var(--paper-muted); margin: 3px 0;">${state.date}</div>
-            <div style="font-size: 8px; color: var(--paper-muted); border-top: 1.5px dashed var(--paper-border); padding-top: 6px;">${state.venue}</div>
-            <div style="height: 12px; background: repeating-linear-gradient(90deg, #333 0px, #333 1.5px, transparent 1.5px, transparent 3.5px); width: 110px; margin: 4px auto 0 auto; opacity: 0.6;"></div>
-            <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-br"></div>
-          </div>
+        specInfo = `
+          <strong>[티켓 / 보딩패스 규격]</strong><br>
+          - 실 작업 사이즈: 81 × 156 mm (재단 3mm 포함)<br>
+          - 최종 재단 사이즈: 75 × 150 mm (하단 미싱선 옵션 권장)<br>
+          - 권장 해상도: 300 DPI (957 × 1843 px)<br>
+          - 추천 인쇄소: 성원애드피아 상품권/티켓 독판 인쇄
         `;
       }
 
-      // Append Custom Draggable Text Boxes
-      state.customBoxes.forEach(b => {
-        html += `
-          <div id="${b.id}" class="drag-element" style="left: ${b.x}px; top: ${b.y}px; font-family: ${b.font}; font-size: ${b.size}px; color: var(--paper-text); background: rgba(255,255,255,0.4); padding: 4px 8px; border-radius: 4px; border: 1px dotted var(--gold);">
-            ${b.text}
-            <div class="drag-handle-corner dh-tl"></div><div class="drag-handle-corner dh-tr"></div>
-            <div class="drag-handle-corner dh-bl"></div><div class="drag-handle-corner dh-br"></div>
-          </div>
-        `;
-      });
-
-      mount.innerHTML = html;
-      initDragListeners();
+      specBox.innerHTML = `
+        ${specInfo}
+        <br>
+        <strong>[선택된 특수지]</strong>: ${state.texture.toUpperCase()} 350g 고평량지<br>
+        <strong>[선택된 템플릿]</strong>: ${BASE_TEMPLATES[state.templateId]?.name || ''}
+      `;
+      modal.classList.remove('hidden');
     }
 
-    // ================= CANVA-STYLE DRAG & DROP ENGINE =================
-    let selectedEl = null;
-    let dragData = { isDragging: false, startX: 0, startY: 0, elemX: 0, elemY: 0 };
-
-    function selectElement(id) {
-      document.querySelectorAll('.drag-element').forEach(el => el.classList.remove('selected'));
-      const target = document.getElementById(id);
-      if (target) {
-        target.classList.add('selected');
-        selectedEl = target;
-      }
+    function closeExportModal() {
+      document.getElementById('exportModal').classList.add('hidden');
     }
 
-    function initDragListeners() {
-      const elements = document.querySelectorAll('.drag-element');
-      elements.forEach(el => {
-        // Pointer down (mouse or touch)
-        const onStart = (e) => {
-          e.preventDefault();
-          selectElement(el.id);
-          const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-          const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-          const rect = el.getBoundingClientRect();
-          const parentRect = el.parentElement.getBoundingClientRect();
-
-          dragData = {
-            isDragging: true,
-            startX: clientX,
-            startY: clientY,
-            elemX: rect.left - parentRect.left,
-            elemY: rect.top - parentRect.top
-          };
-
-          const onMove = (ev) => {
-            if (!dragData.isDragging) return;
-            const curX = ev.touches ? ev.touches[0].clientX : ev.clientX;
-            const curY = ev.touches ? ev.touches[0].clientY : ev.clientY;
-            const dx = curX - dragData.startX;
-            const dy = curY - dragData.startY;
-
-            let newX = dragData.elemX + dx;
-            let newY = dragData.elemY + dy;
-
-            el.style.left = `${newX}px`;
-            el.style.top = `${newY}px`;
-            el.style.right = 'auto';
-            el.style.bottom = 'auto';
-
-            // Sync custom box coordinates
-            const box = state.customBoxes.find(b => b.id === el.id);
-            if (box) { box.x = newX; box.y = newY; }
-          };
-
-          const onEnd = () => {
-            dragData.isDragging = false;
-            window.removeEventListener('mousemove', onMove);
-            window.removeEventListener('mouseup', onEnd);
-            window.removeEventListener('touchmove', onMove);
-            window.removeEventListener('touchend', onEnd);
-          };
-
-          window.addEventListener('mousemove', onMove);
-          window.addEventListener('mouseup', onEnd);
-          window.addEventListener('touchmove', onMove);
-          window.addEventListener('touchend', onEnd);
-        };
-
-        el.addEventListener('mousedown', onStart);
-        el.addEventListener('touchstart', onStart, { passive: false });
+    function copyPrintSpec() {
+      const text = `[The Paper Chapter 종이청첩장 발주 스펙]
+규격: ${state.spec.toUpperCase()}
+재질: ${state.texture}
+해상도: 300 DPI
+템플릿: ${BASE_TEMPLATES[state.templateId]?.name}`;
+      navigator.clipboard.writeText(text).then(() => {
+        alert('인쇄소 발주 규격이 클립보드에 복사되었습니다!');
       });
     }
 
-    // Copy Spec
-    function copySpec() {
-      navigator.clipboard.writeText("인쇄 규격: 엽서형 100x150mm (재단여백 106x156mm) | 추천지: 띤또레또 300g | 300 DPI CMYK");
-      alert("인쇄소 발주 규격이 복사되었습니다!\n성원애드피아 / 오프린트미 주문 시 붙여넣기 하시면 됩니다.");
-    }
-
-    // Export Alert
-    document.getElementById('btnExport').addEventListener('click', () => {
-      alert(`[The Paper Chapter]\n인쇄용 300DPI 도안 규격 검증 완료!\n\n규격: ${state.spec.toUpperCase()}\n재질: ${state.texture}\n해상도: 300 DPI 초고화질\n성원애드피아 / 오프린트미 독판 인쇄 카테고리에 바로 접수 가능합니다.`);
+    // BOOTSTRAP STUDIO ON LOAD
+    window.addEventListener('DOMContentLoaded', () => {
+      initStudio();
     });
-
-    // Boot
-    initColorPalettes();
-    applyTheme('linen', null);
   </script>
 </body>
 </html>
