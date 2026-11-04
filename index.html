@@ -619,9 +619,8 @@
     }
 
     /* TheNewChapter Style Floating Toolbar on Selected Element */
-    .canvas-el.selected .el-floating-bar { display: flex !important; }
     .el-floating-bar {
-      display: none;
+      display: none !important;
       position: absolute;
       top: -36px;
       left: 50%;
@@ -631,13 +630,15 @@
       color: #FFF;
       padding: 3px 8px;
       border-radius: 20px;
-      display: flex;
       align-items: center;
       gap: 5px;
       font-size: 10px;
       white-space: nowrap;
       z-index: 40;
       box-shadow: 0 4px 14px rgba(0,0,0,0.28);
+    }
+    .canvas-el.selected .el-floating-bar {
+      display: flex !important;
     }
     .el-floating-btn {
       background: transparent;
