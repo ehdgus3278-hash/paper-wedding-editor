@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>The Paper Chapter | 종이청첩장 커스텀 스튜디오 Pro</title>
-  <!-- Google Fonts: 9 Fonts (5 English + 4 Korean) -->
+  <title>The Paper Chapter | 종이청첩장 커스텀 스튜디오 Pro v3.6</title>
+  <!-- Google Fonts: 5 English + 9 Curated Korean Wedding Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&family=Nanum+Myeongjo:wght@400;700&family=Noto+Serif+KR:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Song+Myung&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Gowun+Batang:wght@400;700&family=Gowun+Dodum&family=Hahmlet:wght@300;400;600;700&family=Montserrat:wght@300;400;600&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700;800&family=Noto+Sans+KR:wght@300;400;500;700&family=Noto+Serif+KR:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Song+Myung&family=Yeon+Sung&display=swap" rel="stylesheet">
 
   <style>
     /* ================= 100% SELF-CONTAINED FULL STUDIO CSS ================= */
@@ -25,16 +25,23 @@
       --gold-light: #F7F2E8;
       --gold-border: rgba(197, 160, 89, 0.45);
 
-      /* Font Family Classes */
+      /* English Editorial Fonts (5) */
       --font-bodoni: 'Bodoni Moda', 'Didot', serif;
       --font-cormorant: 'Cormorant Garamond', serif;
       --font-playfair: 'Playfair Display', Georgia, serif;
       --font-cinzel: 'Cinzel', serif;
       --font-montserrat: 'Montserrat', sans-serif;
+
+      /* Korean Curated Wedding Fonts (9) */
+      --font-gowunbatang: 'Gowun Batang', serif;
+      --font-hahmlet: 'Hahmlet', serif;
       --font-notoserif: 'Noto Serif KR', serif;
       --font-nanum: 'Nanum Myeongjo', serif;
       --font-songmyung: 'Song Myung', serif;
-      --font-sans: -apple-system, BlinkMacSystemFont, 'Pretendard', sans-serif;
+      --font-gowundodum: 'Gowun Dodum', sans-serif;
+      --font-yeonsung: 'Yeon Sung', cursive;
+      --font-nanumgothic: 'Nanum Gothic', sans-serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Noto Sans KR', sans-serif;
 
       /* Active Canvas Theme Defaults */
       --paper-bg: #FAF8F5;
@@ -333,6 +340,17 @@
     }
     .swatch-name { font-size: 9px; font-weight: 500; color: var(--charcoal); white-space: nowrap; }
 
+    /* Font Chips for 1-Click Korean Font Switching */
+    .font-chip {
+      background: #FFF;
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .font-chip:hover { border-color: var(--gold); color: var(--gold); }
+    .font-chip.active { border-color: var(--gold); background: var(--gold-light); color: var(--gold); font-weight: 700; }
+
     /* Input & Form Styling */
     .form-group { display: flex; flex-direction: column; gap: 4px; }
     .form-label { font-size: 11px; font-weight: 600; color: var(--body); }
@@ -354,7 +372,7 @@
     }
     .textarea-custom { resize: vertical; min-height: 50px; line-height: 1.4; }
 
-    /* Center Canvas Area */
+    /* Center Canvas Area with Smooth Zoom */
     .canvas-viewport {
       flex: 1;
       background: #EDE8DF;
@@ -364,17 +382,28 @@
       justify-content: flex-start;
       padding: 16px;
       overflow-y: auto;
+      overflow-x: auto;
       position: relative;
     }
-    .canvas-viewport::-webkit-scrollbar { width: 6px; }
+    .canvas-viewport::-webkit-scrollbar { width: 6px; height: 6px; }
     .canvas-viewport::-webkit-scrollbar-thumb { background: #D0C9BA; border-radius: 10px; }
+
+    /* PC/Mobile Zoom Scaling Wrapper */
+    .paper-zoom-wrapper {
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      transform-origin: top center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 10px auto;
+    }
 
     /* Top Canvas Action Bar */
     .canvas-toolbar {
       display: flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255, 255, 255, 0.92);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(8px);
       padding: 6px 12px;
       border-radius: 30px;
@@ -439,7 +468,7 @@
     /* ================= REAL 3D PAPER MOCKUP CONTAINER ================= */
     .paper-mockup {
       position: relative;
-      margin: 10px auto;
+      margin: 0 auto;
       flex-shrink: 0;
       /* Physical 350gsm Cardstock: Deep multi-stage ambient shadow and crisp physical bevel */
       box-shadow:
@@ -589,35 +618,40 @@
       z-index: 25 !important;
     }
 
-    /* Interactive Element Floating Toolbar */
+    /* TheNewChapter Style Floating Toolbar on Selected Element */
     .el-floating-bar {
       position: absolute;
-      top: -34px;
+      top: -36px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--charcoal);
+      background: rgba(26, 26, 26, 0.95);
+      backdrop-filter: blur(6px);
       color: #FFF;
-      padding: 3px 6px;
-      border-radius: 16px;
+      padding: 3px 8px;
+      border-radius: 20px;
       display: flex;
       align-items: center;
-      gap: 4px;
+      gap: 5px;
       font-size: 10px;
       white-space: nowrap;
       z-index: 40;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.28);
     }
     .el-floating-btn {
       background: transparent;
       border: none;
       color: #FFF;
       font-size: 10px;
-      padding: 2px 5px;
+      font-weight: 500;
+      padding: 3px 6px;
       cursor: pointer;
-      border-radius: 3px;
+      border-radius: 4px;
+      transition: background 0.1s ease;
     }
     .el-floating-btn:hover { background: rgba(255,255,255,0.2); }
+    .el-floating-btn.active { background: var(--gold); color: #FFF; font-weight: 700; }
     .el-floating-btn.danger { color: #FF7B7B; }
+    .el-floating-divider { width: 1px; height: 12px; background: rgba(255,255,255,0.2); }
 
     /* Photo Frame Shapes */
     .frame-shape-rect { border-radius: 2px; }
@@ -683,7 +717,7 @@
   <header>
     <div class="flex items-center">
       <span class="brand-title">THE PAPER CHAPTER</span>
-      <span class="brand-badge">PRO v3.5</span>
+      <span class="brand-badge">PRO v3.6</span>
     </div>
     <div class="flex items-center" style="gap: 8px;">
       <button class="tool-btn dark" onclick="openExportModal()">
@@ -763,14 +797,14 @@
             <div class="acc-badge">3</div>
             <div>
               <div class="acc-title">용지 형태 및 입체 종이재질</div>
-              <div class="acc-desc">펠트 엠보싱, 리넨 직조, 엑스트라매트 등 5종</div>
+              <div class="acc-desc">더뉴챕터식 자동 구도 적응 & 5종 특수지</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-3">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-3">
           <div class="form-group">
-            <div class="form-label">용지 규격</div>
+            <div class="form-label">용지 규격 (변경 시 배치 자동 최적화)</div>
             <div class="card-grid-3">
               <div class="card-choice active" id="specPostcard" onclick="setSpec('postcard')">
                 <span class="card-choice-title">엽서형</span>
@@ -839,21 +873,49 @@
         </div>
       </div>
 
-      <!-- STEP 5: FONTS & CUSTOM TEXT BOXES -->
+      <!-- STEP 5: EXPANDED 9 KOREAN FONTS & 5 ENGLISH FONTS -->
       <div class="acc-item">
         <button class="acc-btn" onclick="toggleAcc(5)">
           <div class="flex items-center">
             <div class="acc-badge">5</div>
             <div>
-              <div class="acc-title">글씨체 (폰트 9종) & 글상자 추가</div>
-              <div class="acc-desc">영문 에디토리얼 5종 & 한글 감성명조 4종</div>
+              <div class="acc-title">글씨체 (한글 9종 · 영문 5종)</div>
+              <div class="acc-desc">실시간 즉각 반영 감성 명조 · 고딕 · 손글씨</div>
             </div>
           </div>
           <span class="acc-chevron" id="accChv-5">▾</span>
         </button>
         <div class="acc-body collapsed" id="accBody-5">
           <div class="form-group">
-            <div class="form-label">영문 폰트</div>
+            <div class="form-label">한글 대표 서체 (9종 원클릭 즉시 적용)</div>
+            <select class="select-custom" id="selFontKr" onchange="changeFontKr(this.value)">
+              <option value="var(--font-gowunbatang)">Gowun Batang (고운바탕 - 부드럽고 따뜻한 감성 1위)</option>
+              <option value="var(--font-hahmlet)">Hahmlet (함렛 - 모던 레트로 서정적 명조)</option>
+              <option value="var(--font-notoserif)">Noto Serif KR (노토세리프 - 정갈하고 깔끔한 대표 본문)</option>
+              <option value="var(--font-nanum)">Nanum Myeongjo (나눔명조 - 클래식 웨딩 스테디셀러)</option>
+              <option value="var(--font-songmyung)">Song Myung (송명 - 붓글씨 필선의 우아한 서체)</option>
+              <option value="var(--font-gowundodum)">Gowun Dodum (고운돋움 - 단정하고 깨끗한 모던 돋움)</option>
+              <option value="var(--font-yeonsung)">Yeon Sung (연성체 - 자연스러운 손글씨 감성)</option>
+              <option value="var(--font-nanumgothic)">Nanum Gothic (나눔고딕 - 선명하고 편안한 고딕)</option>
+              <option value="var(--font-sans)">Pretendard / Noto Sans (모던 감각 산세리프)</option>
+            </select>
+          </div>
+
+          <!-- Quick 1-Click Korean Font Chips -->
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-top: 2px;">
+            <button class="tool-btn justify-center font-chip active" id="chipGowun" onclick="changeFontKr('var(--font-gowunbatang)')" style="font-family: var(--font-gowunbatang); font-size: 10.5px; padding: 5px;">고운바탕</button>
+            <button class="tool-btn justify-center font-chip" id="chipHahmlet" onclick="changeFontKr('var(--font-hahmlet)')" style="font-family: var(--font-hahmlet); font-size: 10.5px; padding: 5px;">함렛</button>
+            <button class="tool-btn justify-center font-chip" id="chipNoto" onclick="changeFontKr('var(--font-notoserif)')" style="font-family: var(--font-notoserif); font-size: 10.5px; padding: 5px;">노토세리프</button>
+            <button class="tool-btn justify-center font-chip" id="chipNanum" onclick="changeFontKr('var(--font-nanum)')" style="font-family: var(--font-nanum); font-size: 10.5px; padding: 5px;">나눔명조</button>
+            <button class="tool-btn justify-center font-chip" id="chipSong" onclick="changeFontKr('var(--font-songmyung)')" style="font-family: var(--font-songmyung); font-size: 10.5px; padding: 5px;">송명</button>
+            <button class="tool-btn justify-center font-chip" id="chipDodum" onclick="changeFontKr('var(--font-gowundodum)')" style="font-family: var(--font-gowundodum); font-size: 10.5px; padding: 5px;">고운돋움</button>
+            <button class="tool-btn justify-center font-chip" id="chipYeon" onclick="changeFontKr('var(--font-yeonsung)')" style="font-family: var(--font-yeonsung); font-size: 10.5px; padding: 5px;">연성체</button>
+            <button class="tool-btn justify-center font-chip" id="chipGothic" onclick="changeFontKr('var(--font-nanumgothic)')" style="font-family: var(--font-nanumgothic); font-size: 10.5px; padding: 5px;">나눔고딕</button>
+            <button class="tool-btn justify-center font-chip" id="chipSans" onclick="changeFontKr('var(--font-sans)')" style="font-family: var(--font-sans); font-size: 10.5px; padding: 5px;">프리텐다드</button>
+          </div>
+
+          <div class="form-group" style="margin-top: 8px;">
+            <div class="form-label">영문 에디토리얼 서체 (5종)</div>
             <select class="select-custom" id="selFontEn" onchange="changeFontEn(this.value)">
               <option value="var(--font-bodoni)">Bodoni Moda (보도니 에디토리얼)</option>
               <option value="var(--font-cormorant)">Cormorant Garamond (우아한 세리프)</option>
@@ -862,16 +924,7 @@
               <option value="var(--font-montserrat)">Montserrat (모던 산세리프)</option>
             </select>
           </div>
-          <div class="form-group">
-            <div class="form-label">한글 폰트</div>
-            <select class="select-custom" id="selFontKr" onchange="changeFontKr(this.value)">
-              <option value="var(--font-notoserif)">Noto Serif KR (정갈한 본문명조)</option>
-              <option value="var(--font-nanum)">Nanum Myeongjo (나눔명조 클래식)</option>
-              <option value="var(--font-songmyung)">Song Myung (송명 감성서체)</option>
-              <option value="var(--font-sans)">Pretendard (모던 깔끔 산세리프)</option>
-            </select>
-          </div>
-          <button class="tool-btn w-full justify-center" onclick="addCustomTextBox()" style="margin-top: 4px;">
+          <button class="tool-btn w-full justify-center" onclick="addCustomTextBox()" style="margin-top: 6px;">
             ➕ 자유 글상자 추가하기
           </button>
         </div>
@@ -933,37 +986,51 @@
         <button onclick="addCustomTextBox()" class="tool-btn">
           ➕ 글상자
         </button>
+
+        <!-- Zoom Scaling Bar for PC & Mobile -->
+        <div style="display: flex; align-items: center; background: #EAE6DD; padding: 2px 5px; border-radius: 20px; gap: 3px;">
+          <button class="tool-btn" onclick="adjustZoom(-0.15)" style="padding: 2px 7px; font-size: 10px; border: none; background: transparent;">🔍➖</button>
+          <span id="zoomLabel" style="font-size: 10px; font-weight: 700; color: var(--charcoal); min-width: 36px; text-align: center;">100%</span>
+          <button class="tool-btn" onclick="adjustZoom(0.15)" style="padding: 2px 7px; font-size: 10px; border: none; background: transparent;">🔍➕</button>
+          <button class="tool-btn" onclick="setZoom(1.35)" style="padding: 2px 7px; font-size: 9px; border: none; background: #FFF; border-radius: 12px; font-weight: 700; color: var(--charcoal);">🖥️ PC확대</button>
+        </div>
+
         <button onclick="resetToTemplateDefault()" class="tool-btn">
           ↺ 템플릿 초기화
         </button>
       </div>
 
-      <!-- Real 3D Physical Paper Container -->
-      <div class="paper-mockup mockup-postcard tex-tintoretto" id="mockupPaper">
+      <!-- Zoom Wrapper -->
+      <div class="paper-zoom-wrapper" id="paperZoomWrapper">
 
-        <!-- 3D Studio Lighting Layer -->
-        <div class="paper-lighting-overlay" id="paperLighting"></div>
+        <!-- Real 3D Physical Paper Container -->
+        <div class="paper-mockup mockup-postcard tex-tintoretto" id="mockupPaper">
 
-        <!-- Organic Paper Texture Layer -->
-        <div class="paper-texture-layer" id="paperTexture"></div>
+          <!-- 3D Studio Lighting Layer -->
+          <div class="paper-lighting-overlay" id="paperLighting"></div>
 
-        <!-- 3mm Print Safety Guide -->
-        <div class="guide-box" id="guideBleedBox">
-          <div style="position: absolute; top: 2px; right: 4px; font-size: 8px; color: var(--gold); background: rgba(255,255,255,0.85); padding: 1px 4px; border-radius: 2px; font-weight: 600;">
-            안전선 (3mm 여백)
+          <!-- Organic Paper Texture Layer -->
+          <div class="paper-texture-layer" id="paperTexture"></div>
+
+          <!-- 3mm Print Safety Guide -->
+          <div class="guide-box" id="guideBleedBox">
+            <div style="position: absolute; top: 2px; right: 4px; font-size: 8px; color: var(--gold); background: rgba(255,255,255,0.85); padding: 1px 4px; border-radius: 2px; font-weight: 600;">
+              안전선 (3mm 여백)
+            </div>
           </div>
+
+          <!-- 2-Fold Center Crease Line -->
+          <div class="crease-3d hidden" id="crease3D"></div>
+
+          <!-- Ticket Perforation & Notches -->
+          <div class="ticket-stub-line hidden" id="ticketStubLine"></div>
+          <div class="ticket-notch-left hidden" id="ticketNotchL"></div>
+          <div class="ticket-notch-right hidden" id="ticketNotchR"></div>
+
+          <!-- Dynamic Content Elements Mount -->
+          <div id="dynamicCanvasMount" class="w-full h-full relative" style="z-index: 12;" onclick="handleCanvasBgClick(event)"></div>
+
         </div>
-
-        <!-- 2-Fold Center Crease Line -->
-        <div class="crease-3d hidden" id="crease3D"></div>
-
-        <!-- Ticket Perforation & Notches -->
-        <div class="ticket-stub-line hidden" id="ticketStubLine"></div>
-        <div class="ticket-notch-left hidden" id="ticketNotchL"></div>
-        <div class="ticket-notch-right hidden" id="ticketNotchR"></div>
-
-        <!-- Dynamic Content Elements Mount -->
-        <div id="dynamicCanvasMount" class="w-full h-full relative" style="z-index: 12;" onclick="handleCanvasBgClick(event)"></div>
 
       </div>
 
@@ -1037,7 +1104,7 @@
         themeId: 'linen',
         texture: 'tintoretto',
         fontEn: 'var(--font-bodoni)',
-        fontKr: 'var(--font-notoserif)',
+        fontKr: 'var(--font-gowunbatang)',
         desc: '상단 3:4 감성 웨딩 스냅과 볼드 세리프 타이포의 세련된 조화',
         frontPhotos: [
           { id: 'p1', x: 25, y: 30, w: 280, h: 220, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=600&q=80' }
@@ -1046,14 +1113,14 @@
           { id: 't1', x: 25, y: 265, text: 'WEDDING INVITATION', font: 'var(--font-bodoni)', size: 16, weight: '700', align: 'center', letterSpacing: '0.15em', w: 280 },
           { id: 't2', x: 25, y: 295, text: 'KIM DONGHYEON  &  HA EUNJI', font: 'var(--font-cormorant)', size: 12, weight: '600', align: 'center', letterSpacing: '0.12em', w: 280 },
           { id: 't3', x: 25, y: 325, text: '2027. 02. 21 SUN 11:00 AM', font: 'var(--font-bodoni)', size: 11, weight: '400', align: 'center', letterSpacing: '0.1em', w: 280 },
-          { id: 't4', x: 25, y: 345, text: '대전 라포르테웨딩홀 5F 라포르테홀', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 280 }
+          { id: 't4', x: 25, y: 345, text: '대전 라포르테웨딩홀 5F 라포르테홀', font: 'var(--font-gowunbatang)', size: 10.5, weight: '400', align: 'center', w: 280 }
         ],
         backPhotos: [],
         backTexts: [
           { id: 'tb1', x: 25, y: 35, text: 'OUR WEDDING DAY', font: 'var(--font-bodoni)', size: 13, weight: '600', align: 'center', letterSpacing: '0.18em', w: 280 },
-          { id: 'tb2', x: 30, y: 70, text: '소중한 분들을 초대합니다\n\n서로 마주 보며 다져온 사랑을\n이제 같은 곳을 바라보며 나아가고자 합니다.\n따뜻한 격려와 축복으로 함께해 주시면\n더없는 기쁨으로 간직하겠습니다.', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 },
-          { id: 'tb3', x: 30, y: 175, text: '신랑 김동현 · 신부 하은지', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 270 },
-          { id: 'tb4', x: 30, y: 220, text: '2027년 2월 21일 일요일 오전 11시\n대전 서구 문정로 40 라포르테웨딩홀 5층', font: 'var(--font-notoserif)', size: 10, weight: '500', align: 'center', w: 270 }
+          { id: 'tb2', x: 30, y: 70, text: '소중한 분들을 초대합니다\n\n서로 마주 보며 다져온 사랑을\n이제 같은 곳을 바라보며 나아가고자 합니다.\n따뜻한 격려와 축복으로 함께해 주시면\n더없는 기쁨으로 간직하겠습니다.', font: 'var(--font-gowunbatang)', size: 10.5, weight: '400', align: 'center', w: 270 },
+          { id: 'tb3', x: 30, y: 175, text: '신랑 김동현 · 신부 하은지', font: 'var(--font-gowunbatang)', size: 11.5, weight: '600', align: 'center', w: 270 },
+          { id: 'tb4', x: 30, y: 220, text: '2027년 2월 21일 일요일 오전 11시\n대전 서구 문정로 40 라포르테웨딩홀 5층', font: 'var(--font-gowunbatang)', size: 10, weight: '500', align: 'center', w: 270 }
         ]
       },
       postcard_arch: {
@@ -1065,7 +1132,7 @@
         themeId: 'linen',
         texture: 'tintoretto',
         fontEn: 'var(--font-cormorant)',
-        fontKr: 'var(--font-notoserif)',
+        fontKr: 'var(--font-hahmlet)',
         desc: '우아한 성당 아치 프레임과 고급스러운 골드 라인 보더',
         frontPhotos: [
           { id: 'p1', x: 45, y: 40, w: 240, h: 260, shape: 'arch', grayscale: true, url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=600&q=80' }
@@ -1078,8 +1145,8 @@
         backPhotos: [],
         backTexts: [
           { id: 'tb1', x: 30, y: 50, text: 'INVITATION', font: 'var(--font-cormorant)', size: 14, weight: '600', align: 'center', letterSpacing: '0.2em', w: 270 },
-          { id: 'tb2', x: 30, y: 90, text: '곁에 있을 때 가장 나다운 모습이 되는 사람을 만났습니다.\n믿음과 사랑으로 평생을 함께할 두 사람의 시작에\n귀한 걸음으로 축복해 주시기 바랍니다.', font: 'var(--font-notoserif)', size: 10, weight: '400', align: 'center', w: 270 },
-          { id: 'tb3', x: 30, y: 200, text: '김동현 · 하은지', font: 'var(--font-notoserif)', size: 12, weight: '600', align: 'center', w: 270 }
+          { id: 'tb2', x: 30, y: 90, text: '곁에 있을 때 가장 나다운 모습이 되는 사람을 만났습니다.\n믿음과 사랑으로 평생을 함께할 두 사람의 시작에\n귀한 걸음으로 축복해 주시기 바랍니다.', font: 'var(--font-hahmlet)', size: 10, weight: '400', align: 'center', w: 270 },
+          { id: 'tb3', x: 30, y: 200, text: '김동현 · 하은지', font: 'var(--font-hahmlet)', size: 12, weight: '600', align: 'center', w: 270 }
         ]
       },
       postcard_lace: {
@@ -1118,7 +1185,7 @@
         themeId: 'linen',
         texture: 'tintoretto',
         fontEn: 'var(--font-bodoni)',
-        fontKr: 'var(--font-notoserif)',
+        fontKr: 'var(--font-gowunbatang)',
         desc: '외면에는 시네마틱 감성 스냅, 내면에는 달력과 정중한 초대글',
         frontPhotos: [
           { id: 'p1', x: 195, y: 25, w: 160, h: 165, shape: 'rect', grayscale: true, url: 'https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=500&q=80' }
@@ -1126,7 +1193,7 @@
         frontTexts: [
           // 뒷표지 (좌측)
           { id: 't_back_title', x: 20, y: 70, text: 'THANK YOU', font: 'var(--font-bodoni)', size: 12, weight: '600', align: 'center', letterSpacing: '0.15em', w: 145 },
-          { id: 't_back_desc', x: 20, y: 105, text: '저희 두 사람의 새로운 시작을\n축복해 주신 모든 분들께\n깊은 감사를 드립니다.', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 145 },
+          { id: 't_back_desc', x: 20, y: 105, text: '저희 두 사람의 새로운 시작을\n축복해 주신 모든 분들께\n깊은 감사를 드립니다.', font: 'var(--font-gowunbatang)', size: 9.5, weight: '400', align: 'center', w: 145 },
           // 앞표지 (우측)
           { id: 't_cover_title', x: 195, y: 200, text: 'OUR WEDDING DAY', font: 'var(--font-bodoni)', size: 11, weight: '700', align: 'center', letterSpacing: '0.14em', w: 160 },
           { id: 't_cover_name', x: 195, y: 220, text: 'Donghyeon & Eunji', font: 'var(--font-cormorant)', size: 11, weight: '600', align: 'center', w: 160 },
@@ -1136,11 +1203,11 @@
         backTexts: [
           // 내면 좌측: 미니 달력 & 시
           { id: 'tb_l_cal', x: 20, y: 35, text: 'FEBRUARY 2027', font: 'var(--font-bodoni)', size: 11, weight: '600', align: 'center', letterSpacing: '0.1em', w: 145 },
-          { id: 'tb_l_poem', x: 20, y: 140, text: '우리가 사랑함은\n그가 먼저 우리를 사랑하셨음이라\n(요일 4:19)', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 145 },
+          { id: 'tb_l_poem', x: 20, y: 140, text: '우리가 사랑함은\n그가 먼저 우리를 사랑하셨음이라\n(요일 4:19)', font: 'var(--font-gowunbatang)', size: 9.5, weight: '400', align: 'center', w: 145 },
           // 내면 우측: 정중한 초대글
-          { id: 'tb_r_title', x: 195, y: 35, text: '소중한 분들을 모십니다', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 160 },
-          { id: 'tb_r_body', x: 195, y: 65, text: '서로를 배려하고 아끼며\n평생을 함께 걸어가고자 합니다.\n따뜻한 축복으로 함께해 주세요.', font: 'var(--font-notoserif)', size: 9, weight: '400', align: 'center', w: 160 },
-          { id: 'tb_r_venue', x: 195, y: 175, text: '라포르테웨딩홀 5층 라포르테홀\n대전 서구 문정로 40 (탄방역 2번 출구)', font: 'var(--font-notoserif)', size: 8.5, weight: '500', align: 'center', w: 160 }
+          { id: 'tb_r_title', x: 195, y: 35, text: '소중한 분들을 모십니다', font: 'var(--font-gowunbatang)', size: 11, weight: '600', align: 'center', w: 160 },
+          { id: 'tb_r_body', x: 195, y: 65, text: '서로를 배려하고 아끼며\n평생을 함께 걸어가고자 합니다.\n따뜻한 축복으로 함께해 주세요.', font: 'var(--font-gowunbatang)', size: 9.5, weight: '400', align: 'center', w: 160 },
+          { id: 'tb_r_venue', x: 195, y: 175, text: '라포르테웨딩홀 5층 라포르테홀\n대전 서구 문정로 40 (탄방역 2번 출구)', font: 'var(--font-gowunbatang)', size: 8.5, weight: '500', align: 'center', w: 160 }
         ]
       },
       fold_botanical: {
@@ -1152,7 +1219,7 @@
         themeId: 'sage',
         texture: 'tintoretto',
         fontEn: 'var(--font-cormorant)',
-        fontKr: 'var(--font-notoserif)',
+        fontKr: 'var(--font-gowundodum)',
         desc: '은은한 보태니컬 올리브 엠보스와 따뜻한 자연의 색채',
         frontPhotos: [
           { id: 'p1', x: 205, y: 35, w: 140, h: 145, shape: 'arch', grayscale: true, url: 'https://images.unsplash.com/photo-1606800052052-a08af7148866?auto=format&fit=crop&w=500&q=80' }
@@ -1164,8 +1231,8 @@
         ],
         backPhotos: [],
         backTexts: [
-          { id: 'tb1', x: 20, y: 50, text: '함께 맞는 봄날의 약속', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 145 },
-          { id: 'tb2', x: 195, y: 50, text: '오셔서 따뜻한 박수로\n축복해 주시면 감사하겠습니다.', font: 'var(--font-notoserif)', size: 9.5, weight: '400', align: 'center', w: 160 }
+          { id: 'tb1', x: 20, y: 50, text: '함께 맞는 봄날의 약속', font: 'var(--font-gowundodum)', size: 11, weight: '600', align: 'center', w: 145 },
+          { id: 'tb2', x: 195, y: 50, text: '오셔서 따뜻한 박수로\n축복해 주시면 감사하겠습니다.', font: 'var(--font-gowundodum)', size: 10, weight: '400', align: 'center', w: 160 }
         ]
       },
       fold_romantic: {
@@ -1177,7 +1244,7 @@
         themeId: 'rose',
         texture: 'linen',
         fontEn: 'var(--font-playfair)',
-        fontKr: 'var(--font-notoserif)',
+        fontKr: 'var(--font-yeonsung)',
         desc: '폴라로이드 스냅 사진 감성과 은은한 로즈 톤의 조화',
         frontPhotos: [
           { id: 'p1', x: 200, y: 30, w: 150, h: 160, shape: 'polaroid', grayscale: false, url: 'https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&w=500&q=80' }
@@ -1185,12 +1252,12 @@
         frontTexts: [
           { id: 't1', x: 20, y: 80, text: 'A Beautiful Beginning', font: 'var(--font-playfair)', size: 12, weight: '600', align: 'center', w: 145 },
           { id: 't2', x: 195, y: 210, text: 'Our Wedding Day', font: 'var(--font-playfair)', size: 11, weight: '600', align: 'center', w: 160 },
-          { id: 't3', x: 195, y: 235, text: '2027년 2월 21일', font: 'var(--font-notoserif)', size: 9.5, weight: '500', align: 'center', w: 160 }
+          { id: 't3', x: 195, y: 235, text: '2027년 2월 21일', font: 'var(--font-yeonsung)', size: 10, weight: '500', align: 'center', w: 160 }
         ],
         backPhotos: [],
         backTexts: [
-          { id: 'tb1', x: 25, y: 40, text: '소중한 분들께 드리는 글', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 140 },
-          { id: 'tb2', x: 195, y: 40, text: '김동현 & 하은지 결혼식', font: 'var(--font-notoserif)', size: 11, weight: '600', align: 'center', w: 160 }
+          { id: 'tb1', x: 25, y: 40, text: '소중한 분들께 드리는 글', font: 'var(--font-yeonsung)', size: 11, weight: '600', align: 'center', w: 140 },
+          { id: 'tb2', x: 195, y: 40, text: '김동현 & 하은지 결혼식', font: 'var(--font-yeonsung)', size: 11, weight: '600', align: 'center', w: 160 }
         ]
       },
 
@@ -1266,7 +1333,7 @@
         themeId: 'black',
         texture: 'extra',
         fontEn: 'var(--font-montserrat)',
-        fontKr: 'var(--font-sans)',
+        fontKr: 'var(--font-nanumgothic)',
         desc: '모던하고 감각적인 축제 입장권 느낌의 볼드 타이포그래피',
         frontPhotos: [
           { id: 'p1', x: 30, y: 50, w: 190, h: 140, shape: 'round', grayscale: false, url: 'https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=500&q=80' }
@@ -1283,7 +1350,7 @@
         backPhotos: [],
         backTexts: [
           { id: 'tb_msg', x: 25, y: 60, text: "LET'S CELEBRATE TOGETHER", font: 'var(--font-montserrat)', size: 10, weight: '700', align: 'center', letterSpacing: '0.1em', w: 200 },
-          { id: 'tb_info', x: 25, y: 100, text: '신랑 김동현 & 신부 하은지\n함께 걸어갈 축제의 날을 함께해주세요.', font: 'var(--font-sans)', size: 9, weight: '400', align: 'center', w: 200 }
+          { id: 'tb_info', x: 25, y: 100, text: '신랑 김동현 & 신부 하은지\n함께 걸어갈 축제의 날을 함께해주세요.', font: 'var(--font-nanumgothic)', size: 9, weight: '400', align: 'center', w: 200 }
         ]
       }
     };
@@ -1296,8 +1363,9 @@
       themeId: 'linen',
       texture: 'tintoretto', // tintoretto, linen, extra, kraft, pearl
       lighting: true,
+      zoom: 1.0,
       fontEn: 'var(--font-bodoni)',
-      fontKr: 'var(--font-notoserif)',
+      fontKr: 'var(--font-gowunbatang)',
       groom: '김동현',
       bride: '하은지',
       date: '2027년 2월 21일 일요일, 오전 11시',
@@ -1307,6 +1375,8 @@
       // Dynamic Elements on Canvas
       photos: [],
       texts: [],
+      backPhotos: [],
+      backTexts: [],
       selectedElId: null,
       selectedType: null // 'photo' or 'text'
     };
@@ -1316,6 +1386,13 @@
       renderTemplateCards('postcard');
       initColorPalettes();
       applyTemplate('postcard_editorial');
+
+      // PC Viewport Zoom Default (If PC width > 850px, default to 130% for generous crisp view)
+      if (window.innerWidth >= 900) {
+        setZoom(1.30);
+      } else {
+        setZoom(1.0);
+      }
     }
 
     // Switch Template Category Tabs (엽서형 / 2단접지 / 티켓형)
@@ -1375,6 +1452,7 @@
       // Update Fonts UI
       document.getElementById('selFontEn').value = tpl.fontEn;
       document.getElementById('selFontKr').value = tpl.fontKr;
+      updateFontChipsUI(tpl.fontKr);
 
       // Update Template Card active state
       document.querySelectorAll('.template-card').forEach(c => c.classList.remove('active'));
@@ -1462,15 +1540,74 @@
       }
     }
 
-    // Spec Change
-    function setSpec(spec) {
-      state.spec = spec;
+    // Spec Change with TheNewChapter Auto-Adaptive Layout Engine
+    function setSpec(newSpec) {
+      if (state.spec === newSpec) return;
+      const oldSpec = state.spec;
+      state.spec = newSpec;
+
       document.querySelectorAll('#accBody-3 .card-choice').forEach(c => c.classList.remove('active'));
-      if (spec === 'postcard') document.getElementById('specPostcard').classList.add('active');
-      if (spec === 'fold2') document.getElementById('specFold2').classList.add('active');
-      if (spec === 'ticket') document.getElementById('specTicket').classList.add('active');
+      if (newSpec === 'postcard') document.getElementById('specPostcard').classList.add('active');
+      if (newSpec === 'fold2') document.getElementById('specFold2').classList.add('active');
+      if (newSpec === 'ticket') document.getElementById('specTicket').classList.add('active');
+
+      // AUTO-ADAPTIVE LAYOUT: Reposition elements proportionally like TheNewChapter!
+      adaptElementsToSpec(oldSpec, newSpec);
+
       updateMockupDimensions();
       renderCanvas();
+    }
+
+    function adaptElementsToSpec(oldSpec, newSpec) {
+      const currentPhotos = state.side === 'front' ? state.photos : (state.backPhotos || []);
+      const currentTexts = state.side === 'front' ? state.texts : (state.backTexts || []);
+
+      if (newSpec === 'fold2') {
+        // Adapt to 2-Fold: width 370px, split into left half (x: 15~170) and right half (x: 195~355)
+        currentPhotos.forEach(p => {
+          p.x = 200;
+          p.y = 25;
+          p.w = 155;
+          p.h = 160;
+        });
+
+        currentTexts.forEach((t, i) => {
+          // If title/name/date on front: keep on right cover
+          if (t.id.includes('title') || t.id.includes('name') || t.id.includes('date') || i >= currentTexts.length / 2) {
+            t.x = 195;
+            t.w = 160;
+          } else {
+            // Keep on left back cover
+            t.x = 15;
+            t.w = 155;
+          }
+        });
+      } else if (newSpec === 'ticket') {
+        // Adapt to Slim Ticket: width 250px, elements fit within 210px
+        currentPhotos.forEach(p => {
+          p.x = 25;
+          p.y = 45;
+          p.w = 200;
+          p.h = 140;
+        });
+        currentTexts.forEach(t => {
+          t.x = 20;
+          t.w = 210;
+          if (t.size > 13) t.size = 12;
+        });
+      } else if (newSpec === 'postcard') {
+        // Adapt to Postcard: width 330px, elements centered
+        currentPhotos.forEach(p => {
+          p.x = 35;
+          p.y = 35;
+          p.w = 260;
+          p.h = 220;
+        });
+        currentTexts.forEach(t => {
+          t.x = 25;
+          t.w = 280;
+        });
+      }
     }
 
     function updateMockupDimensions() {
@@ -1501,6 +1638,24 @@
         tNotchL.classList.remove('hidden');
         tNotchR.classList.remove('hidden');
       }
+    }
+
+    // Zoom Scaling Engine for PC & Mobile
+    function setZoom(scale) {
+      state.zoom = Math.max(0.6, Math.min(2.0, scale));
+      const wrapper = document.getElementById('paperZoomWrapper');
+      if (wrapper) {
+        wrapper.style.transform = `scale(${state.zoom})`;
+        // Compensate margin so scroll is comfortable on PC
+        const extraSpace = Math.max(0, (state.zoom - 1) * 320);
+        wrapper.style.marginBottom = `${extraSpace}px`;
+      }
+      const lbl = document.getElementById('zoomLabel');
+      if (lbl) lbl.textContent = Math.round(state.zoom * 100) + '%';
+    }
+
+    function adjustZoom(delta) {
+      setZoom((state.zoom || 1.0) + delta);
     }
 
     // Texture Simulation Change
@@ -1535,9 +1690,48 @@
       updateSidebarPhotoList();
     }
 
-    // Fonts Change
-    function changeFontEn(font) { state.fontEn = font; renderCanvas(); }
-    function changeFontKr(font) { state.fontKr = font; renderCanvas(); }
+    // Real-Time Font Changes
+    function changeFontEn(font) {
+      state.fontEn = font;
+      document.getElementById('selFontEn').value = font;
+      if (state.selectedElId && state.selectedType === 'text') {
+        const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+        const el = list.find(t => t.id === state.selectedElId);
+        if (el) el.font = font;
+      }
+      renderCanvas();
+    }
+
+    function changeFontKr(font) {
+      state.fontKr = font;
+      document.getElementById('selFontKr').value = font;
+      updateFontChipsUI(font);
+
+      // If text element selected, update that element; otherwise update all Korean text
+      if (state.selectedElId && state.selectedType === 'text') {
+        const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+        const el = list.find(t => t.id === state.selectedElId);
+        if (el) el.font = font;
+      } else {
+        const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+        list.forEach(t => {
+          if (t.text && /[가-힣]/.test(t.text)) {
+            t.font = font;
+          }
+        });
+      }
+      renderCanvas();
+    }
+
+    function updateFontChipsUI(font) {
+      document.querySelectorAll('.font-chip').forEach(chip => {
+        if (chip.getAttribute('onclick') && chip.getAttribute('onclick').includes(font)) {
+          chip.classList.add('active');
+        } else {
+          chip.classList.remove('active');
+        }
+      });
+    }
 
     // Live Text Sync from Sidebar Inputs
     function syncText() {
@@ -1578,7 +1772,7 @@
         id: 'photo_' + Date.now(),
         x: state.spec === 'fold2' ? 200 : 45,
         y: 60,
-        w: state.spec === 'ticket' ? 190 : 240,
+        w: state.spec === 'ticket' ? 190 : (state.spec === 'fold2' ? 155 : 240),
         h: state.spec === 'fold2' ? 150 : 220,
         shape: 'rect',
         grayscale: false,
@@ -1653,18 +1847,18 @@
       return list.find(p => p.id === id);
     }
 
-    // ================= CUSTOM TEXT BOX ENGINE =================
+    // ================= CUSTOM TEXT BOX ENGINE & ALIGNMENT =================
     function addCustomTextBox() {
       const newBox = {
         id: 'box_' + Date.now(),
         text: '여기에 문구를 입력하세요',
-        x: 40,
+        x: state.spec === 'fold2' ? 195 : 40,
         y: 100,
         font: state.fontKr,
         size: 11,
         weight: '400',
         align: 'center',
-        w: 250
+        w: state.spec === 'fold2' ? 160 : (state.spec === 'ticket' ? 210 : 250)
       };
 
       if (state.side === 'front') {
@@ -1685,6 +1879,27 @@
         state.backTexts = (state.backTexts || []).filter(t => t.id !== id);
       }
       renderCanvas();
+    }
+
+    // TheNewChapter Text Alignment & Formatting Controls
+    function setTextAlign(id, align, e) {
+      if (e) e.stopPropagation();
+      const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+      const t = list.find(item => item.id === id);
+      if (t) {
+        t.align = align;
+        renderCanvas();
+      }
+    }
+
+    function toggleTextWeight(id, e) {
+      if (e) e.stopPropagation();
+      const list = state.side === 'front' ? state.texts : (state.backTexts || []);
+      const t = list.find(item => item.id === id);
+      if (t) {
+        t.weight = (t.weight === '700' || t.weight === '600' || t.weight === 'bold') ? '400' : '700';
+        renderCanvas();
+      }
     }
 
     // ================= DYNAMIC CANVAS RENDERER =================
@@ -1712,6 +1927,7 @@
             <div class="el-floating-bar">
               <button class="el-floating-btn" onclick="cyclePhotoShape('${p.id}', event)">◩ 형태변경</button>
               <button class="el-floating-btn" onclick="togglePhotoGrayscale('${p.id}'); event.stopPropagation();">◐ 흑백토글</button>
+              <span class="el-floating-divider"></span>
               <button class="el-floating-btn danger" onclick="deletePhoto('${p.id}'); event.stopPropagation();">🗑️ 삭제</button>
             </div>
           ` : ''}
@@ -1749,8 +1965,14 @@
           <div contenteditable="true" onblur="handleInlineEdit('${t.id}', this.innerText)" style="outline: none;">${renderedText}</div>
           ${state.selectedElId === t.id ? `
             <div class="el-floating-bar">
+              <button class="el-floating-btn ${t.align === 'left' ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'left', event)">≡ 좌</button>
+              <button class="el-floating-btn ${(!t.align || t.align === 'center') ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'center', event)">☵ 중</button>
+              <button class="el-floating-btn ${t.align === 'right' ? 'active' : ''}" onclick="setTextAlign('${t.id}', 'right', event)">≡ 우</button>
+              <span class="el-floating-divider"></span>
               <button class="el-floating-btn" onclick="resizeText('${t.id}', 1, event)">A+</button>
               <button class="el-floating-btn" onclick="resizeText('${t.id}', -1, event)">A-</button>
+              <button class="el-floating-btn ${t.weight === '700' ? 'active' : ''}" onclick="toggleTextWeight('${t.id}', event)">굵게</button>
+              <span class="el-floating-divider"></span>
               <button class="el-floating-btn danger" onclick="deleteText('${t.id}'); event.stopPropagation();">🗑️</button>
             </div>
           ` : ''}
@@ -1794,7 +2016,6 @@
     let initialObjX = 0, initialObjY = 0;
 
     function startDrag(e, obj, type) {
-      // Don't drag if clicking floating toolbar buttons or editing text
       if (e.target.closest('.el-floating-bar') || e.target.getAttribute('contenteditable') === 'true') {
         selectElement(obj.id, type);
         return;
@@ -1816,8 +2037,9 @@
       if (!dragObj) return;
       const clientX = e.clientX || (e.touches && e.touches[0].clientX);
       const clientY = e.clientY || (e.touches && e.touches[0].clientY);
-      const dx = clientX - dragStartX;
-      const dy = clientY - dragStartY;
+      const scale = state.zoom || 1.0;
+      const dx = (clientX - dragStartX) / scale;
+      const dy = (clientY - dragStartY) / scale;
 
       dragObj.x = Math.round(initialObjX + dx);
       dragObj.y = Math.round(initialObjY + dy);
